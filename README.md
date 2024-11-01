@@ -1,5 +1,5 @@
 # cse151a-trash
-##Preprocessing Data
+## Preprocessing Data
 
 Our main goal is to classify waste items into three distinct categories: 
 * Landfill: Items that are non-recyclable or non-compostable and should be disposed of in landfills. 
