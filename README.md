@@ -1,7 +1,7 @@
 # cse151a-trash
 ## Preprocessing Data
 
-Our main goal is to classify waste items into three distinct categories: 
+Our main goal is to classify waste items into three general categories: 
 * Landfill: Items that are non-recyclable or non-compostable and should be disposed of in landfills. 
 * Recyclable: Items that can be recycled, such as plastics, metals, glass, and paper products.
 * Compost: Items that can decompose and be used as compost.
