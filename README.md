@@ -47,18 +47,18 @@ As a preprocessing step, we plan on combining the existing 30 waste categories i
 * Split our dataset 60:20:20 for our training, validation, and test set
 * Applied min-max normalization onto the pixel data of our images.
 
-2: **Train your first model**
+2. **Train your first model**
 We used a **random forest** for our first model to classify data 
 
-3: Evaluate your model and compare training vs. test error
+3. Evaluate your model and compare training vs. test error
 Our model had an error of **INSERT TEST ERROR HERE** on our test set.
 
-4: Answer the questions: Where does your model fit in the fitting graph? and What are the next models you are thinking of and why?
+4. Answer the questions: Where does your model fit in the fitting graph? and What are the next models you are thinking of and why?
 **INSERT FITTING GRAPH HERE**
 * 
 * We are thinking of using a CNN next because... **INSERT JUSTIFICATION HERE**
 
-5: Update your README.md to include your new work and updates you have all added. Make sure to upload all code and notebooks. Provide links in your README.md
+5. Update your README.md to include your new work and updates you have all added. Make sure to upload all code and notebooks. Provide links in your README.md
 
 6. Conclusion section: What is the conclusion of your 1st model? What can be done to possibly improve it?
 
