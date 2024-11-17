@@ -1,5 +1,5 @@
 # cse151a-trash
-## Preprocessing Data
+## Milestone 2 Preprocessing Data
 
 Our main goal is to classify waste items into three general categories: 
 * **Landfill**: Items that are non-recyclable or non-compostable and should be disposed of in landfills. 
@@ -40,5 +40,28 @@ As a preprocessing step, we plan on combining the existing 30 waste categories i
 | `'styrofoam_cups'` | landfill |
 | `'styrofoam_food_containers'` | landfill |
 | `'tea_bags'` | compost if plastic free |
+
+## Milestone 3 
+1. **Major Preprocessing**
+* For preprocessing, we categorized the trash data into ``recycling``, ``landfil``, and ``compost`` classes.
+* Split our dataset 60:20:20 for our training, validation, and test set
+* Applied min-max normalization onto the pixel data of our images.
+
+2: **Train your first model**
+We used a **random forest** for our first model to classify data 
+
+3: Evaluate your model and compare training vs. test error
+Our model had an error of **INSERT TEST ERROR HERE** on our test set.
+
+4: Answer the questions: Where does your model fit in the fitting graph? and What are the next models you are thinking of and why?
+**INSERT FITTING GRAPH HERE**
+* 
+* We are thinking of using a CNN next because... **INSERT JUSTIFICATION HERE**
+
+5: Update your README.md to include your new work and updates you have all added. Make sure to upload all code and notebooks. Provide links in your README.md
+
+6. Conclusion section: What is the conclusion of your 1st model? What can be done to possibly improve it?
+
+Please make sure preprocessing is complete and your first model has been trained. If you are doing supervised learning include example ground truth and predictions for train, validation and test. 
 
 
