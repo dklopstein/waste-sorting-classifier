@@ -56,11 +56,13 @@ As a preprocessing step, we plan on combining the existing 30 waste categories i
    
    Our model had an accuracy of 0.8316 on our test set, meaning it had an error of 0.1684.
 
-4. Answer the questions: Where does your model fit in the fitting graph?
+5. Answer the questions: Where does your model fit in the fitting graph?
    
-   Our model falls into the far end of the fitting graph. It has a much higher accuracy (and lower error) for the training set than the test set.
+   ![Fitting Graph](fitting_graph.png)
+   
+   Our model falls on the right of the fitting graph with the hyperparameter of n_estimators tuned to 80.
 
-5. What are the next models you are thinking of and why?
+7. What are the next models you are thinking of and why?
    We are thinking of using a CNN next because of the following advantages:
    * Automatic Feature Learning: CNNs can learn to recognize patterns in images on their own, like edges, shapes, and textures.
    * Spatial Invariance: They can identify objects no matter where they are in the image.
@@ -68,7 +70,7 @@ As a preprocessing step, we plan on combining the existing 30 waste categories i
    * High Accuracy: They are very good at correctly classifying images.
    We are also thinking of applying a RandomizedSearchCV to optimize our initial model because it obtained reasonably high accuracy but was overfitted.
 
-6. What is the conclusion of your 1st model? What can be done to possibly improve it?
+8. What is the conclusion of your 1st model? What can be done to possibly improve it?
    * Conclusion: The model achieved an accuracy of 84.27% on the test set, indicating that it performs reasonably well in classifying trash images into recyclable, compost, and landfill categories. However, the model also showed signs of overfitting, with a nearly perfect training accuracy of 99.95%. This suggests that while the model is effective, there can be improvements made.
    * Improvements:
         * Apply hyperparameter tuning using techniques like Randomized Search and regularization techniques to improve generalization to unseen data.
