@@ -60,7 +60,7 @@ As a preprocessing step, we plan on combining the existing 30 waste categories i
    
    ![Fitting Graph](fitting_graph.png)
    
-   Our model falls on the right of the fitting graph with the hyperparameter of n_estimators tuned to 80.
+   Our final model falls on the right of the fitting graph (created using our validation set) with the hyperparameter of n_estimators tuned to 80.
 
 7. What are the next models you are thinking of and why?
    We are thinking of using a CNN next because of the following advantages:
@@ -76,6 +76,5 @@ As a preprocessing step, we plan on combining the existing 30 waste categories i
         * Apply hyperparameter tuning using techniques like Randomized Search and regularization techniques to improve generalization to unseen data.
         * Extract additional meaningful features, such as texture or shape descriptors, to provide more meaningful inputs to the model.
 
-Please make sure preprocessing is complete and your first model has been trained. If you are doing supervised learning include example ground truth and predictions for train, validation and test. 
 
 
