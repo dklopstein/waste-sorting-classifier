@@ -50,8 +50,6 @@ As a preprocessing step, we plan on combining the existing 30 waste categories i
 
 2. **Train your first model**
    
-   We used a **Random Forest** classifier for our first model to classify the trash images. The Random Forest algorithm was chosen since it is able to handle large and imbalanced datasets. In our dataset, recycling was the dominant class, creating an imbalance that could potentially affect model performance - thus, Random Forest was chosen to address this potential issue. The model uses basic parameters.
-
    We used a **Random Forest** classifier for our first model to classify trash images. Our dataset contains a class imbalance, with recycling being the dominant class, which could potentially affect model performance. Given that Random Forest is suited for handling large and imbalanced datasets, we chose it as our initial model. The model was trained with basic parameters.
 
 4. Evaluate your model and compare training vs. test error
