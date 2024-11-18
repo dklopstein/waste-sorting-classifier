@@ -54,11 +54,11 @@ As a preprocessing step, we plan on combining the existing 30 waste categories i
 
 3. Evaluate your model and compare training vs. test error
    
-   Our model had an error of **INSERT TEST ERROR HERE** on our test set.
+   Our model had an accuracy of 0.8316 on our test set, meaning it had an error of 0.1684.
 
 4. Answer the questions: Where does your model fit in the fitting graph?
    
-   * **INSERT FITTING GRAPH HERE**
+   Our model falls into the far end of the fitting graph. It has a much higher accuracy (and lower error) for the training set than the test set.
 
 5. What are the next models you are thinking of and why?
    We are thinking of using a CNN next because of the following advantages:
@@ -66,10 +66,13 @@ As a preprocessing step, we plan on combining the existing 30 waste categories i
    * Spatial Invariance: They can identify objects no matter where they are in the image.
    * Efficient Processing: CNNs can process large images quickly.
    * High Accuracy: They are very good at correctly classifying images.
+   We are also thinking of applying a RandomizedSearchCV to optimize our initial model because it obtained reasonably high accuracy but was overfitted.
 
 6. What is the conclusion of your 1st model? What can be done to possibly improve it?
-   * Conclusion:
+   * Conclusion: The model achieved an accuracy of 84.27% on the test set, indicating that it performs reasonably well in classifying trash images into recyclable, compost, and landfill categories. However, the model also showed signs of overfitting, with a nearly perfect training accuracy of 99.95%. This suggests that while the model is effective, there can be improvements made.
    * Improvements:
+        * Apply hyperparameter tuning using techniques like Randomized Search and regularization techniques to improve generalization to unseen data.
+        * Extract additional meaningful features, such as texture or shape descriptors, to provide more meaningful inputs to the model.
 
 Please make sure preprocessing is complete and your first model has been trained. If you are doing supervised learning include example ground truth and predictions for train, validation and test. 
 
