@@ -69,8 +69,10 @@ As a preprocessing step, we plan on combining the existing 30 waste categories i
    We are also thinking of applying a RandomizedSearchCV to optimize our initial model because it obtained reasonably high accuracy but was overfitted.
 
 6. What is the conclusion of your 1st model? What can be done to possibly improve it?
-   * Conclusion: Our first model had a reasonably high accuracy, especially for an application where occasional misclassification isn't detrimental.
-   * Improvements: We could experiment with different types of models or further tune our original model, especially by addressing overfitting by tuning parameters such as the number of trees or features.
+   * Conclusion: The model achieved an accuracy of 84.27% on the test set, indicating that it performs reasonably well in classifying trash images into recyclable, compost, and landfill categories. However, the model also showed signs of overfitting, with a nearly perfect training accuracy of 99.95%. This suggests that while the model is effective, there can be improvements made.
+   * Improvements:
+        * Apply hyperparameter tuning using techniques like Randomized Search and regularization techniques to improve generalization.
+        * Extract additional features (e.g., texture).
 
 Please make sure preprocessing is complete and your first model has been trained. If you are doing supervised learning include example ground truth and predictions for train, validation and test. 
 
