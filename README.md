@@ -45,12 +45,14 @@ As a preprocessing step, we plan on combining the existing 30 waste categories i
 1. **Major Preprocessing**
    
    * For preprocessing, we categorized the trash data into ``recycling``, ``landfil``, and ``compost`` classes.
-   * Split our dataset 60:20:20 for our training, validation, and test set
-   * Applied min-max normalization onto the pixel data of our images.
+   * Split our dataset 60:20:20 for our training, validation, and test set.
+   * Applied min-max normalization to the pixel data of the images, scaling each pixel value to be within the 0 to 1 range.
 
 2. **Train your first model**
    
-   We used a **random forest** for our first model to classify data 
+   We used a **Random Forest** classifier for our first model to classify the trash images. The Random Forest algorithm was chosen since it is able to handle large and imbalanced datasets. In our dataset, recycling was the dominant class, creating an imbalance that could potentially affect model performance - thus, Random Forest was chosen to address this potential issue. The model uses basic parameters.
+
+   We used a **Random Forest** classifier for our first model to classify trash images. Our dataset contains a class imbalance, with recycling being the dominant class, which could potentially affect model performance. Given that Random Forest is suited for handling large and imbalanced datasets, we chose it as our initial model. The model was trained with basic parameters.
 
 4. Evaluate your model and compare training vs. test error
    
