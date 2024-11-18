@@ -74,7 +74,7 @@ As a preprocessing step, we plan on combining the existing 30 waste categories i
 9. What is the conclusion of your 1st model? What can be done to possibly improve it?
    * Conclusion: The model achieved an accuracy of 84.27% on the test set, indicating that it performs reasonably well in classifying trash images into recyclable, compost, and landfill categories. However, the model also showed signs of overfitting, with a nearly perfect training accuracy of 99.95%. This suggests that while the model is effective, there can be improvements made.
    * Improvements:
-        * Apply hyperparameter tuning using techniques like Randomized Search and regularization techniques to improve generalization to unseen data.
+        * Apply additional hyperparameter tuning using techniques like Randomized Search and regularization techniques to improve generalization to unseen data.
         * Extract additional meaningful features, such as texture or shape descriptors, to provide more meaningful inputs to the model.
 
 
