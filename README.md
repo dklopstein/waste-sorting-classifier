@@ -63,7 +63,7 @@ As a preprocessing step, we plan on combining the existing 30 waste categories i
    Our final model falls on the right of the fitting graph (created using our validation set) with the hyperparameter of n_estimators tuned to 80. 
 
 7. What are the next models you are thinking of and why?
-8. 
+
    We are thinking of using a CNN next because of the following advantages:
    * Automatic Feature Learning: CNNs can learn to recognize patterns in images on their own, like edges, shapes, and textures.
    * Spatial Invariance: They can identify objects no matter where they are in the image.
