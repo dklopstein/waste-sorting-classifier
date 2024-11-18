@@ -52,19 +52,24 @@ As a preprocessing step, we plan on combining the existing 30 waste categories i
    
    We used a **Random Forest** classifier for our first model to classify trash images. Our dataset contains a class imbalance, with recycling being the dominant class, which could potentially affect model performance. Given that Random Forest is suited for handling large and imbalanced datasets, we chose it as our initial model. The model was trained with basic parameters.
 
-4. Evaluate your model and compare training vs. test error
+3. Evaluate your model and compare training vs. test error
    
    Our model had an error of **INSERT TEST ERROR HERE** on our test set.
 
-6. Answer the questions: Where does your model fit in the fitting graph? and What are the next models you are thinking of and why?
+4. Answer the questions: Where does your model fit in the fitting graph?
    
-   **INSERT FITTING GRAPH HERE**
-   * 
-   * We are thinking of using a CNN next because... **INSERT JUSTIFICATION HERE**
+   * **INSERT FITTING GRAPH HERE**
 
-5. Update your README.md to include your new work and updates you have all added. Make sure to upload all code and notebooks. Provide links in your README.md
+5. What are the next models you are thinking of and why?
+   We are thinking of using a CNN next because of the following advantages:
+   * Automatic Feature Learning: CNNs can learn to recognize patterns in images on their own, like edges, shapes, and textures.
+   * Spatial Invariance: They can identify objects no matter where they are in the image.
+   * Efficient Processing: CNNs can process large images quickly.
+   * High Accuracy: They are very good at correctly classifying images.
 
-6. Conclusion section: What is the conclusion of your 1st model? What can be done to possibly improve it?
+6. What is the conclusion of your 1st model? What can be done to possibly improve it?
+   * Conclusion:
+   * Improvements:
 
 Please make sure preprocessing is complete and your first model has been trained. If you are doing supervised learning include example ground truth and predictions for train, validation and test. 
 
