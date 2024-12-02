@@ -80,6 +80,7 @@ As a preprocessing step, we plan on combining the existing 30 waste categories i
 **Post Milestone 3 Feedback**
 
 Our more generalized model achieved an accuracy of 69% and 67% on our train and test sets respectively with the following fitting graph:
+
 ![image](https://github.com/user-attachments/assets/6d103ad7-d137-4434-9079-128257ec2273)
 
 ## Milestone 4 (CNN)
