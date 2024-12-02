@@ -54,7 +54,7 @@ As a preprocessing step, we plan on combining the existing 30 waste categories i
 
 3. Evaluate your model and compare training vs. test error
    
-   Our model had an accuracy of 0.8316 on our test set, meaning it had an error of 0.1684.
+   Our model had an accuracy of 0.8316 on our test set, meaning it had an error of 0.1684. After addressing overfitting in Milestone 4, it had an accuracy of 0.6677.
 
 5. Answer the questions: Where does your model fit in the fitting graph?
    
@@ -76,6 +76,36 @@ As a preprocessing step, we plan on combining the existing 30 waste categories i
    * Improvements:
         * Apply additional hyperparameter tuning using techniques like Randomized Search and regularization techniques to improve generalization to unseen data.
         * Extract additional meaningful features, such as texture or shape descriptors, to provide more meaningful inputs to the model.
+## Milestone 4 (CNN)
+[Milestone 4 Notebook](./CNN.ipynb)
+
+1. **Model Fit**
+
+   Our training and testing loss were both similar and very low . The training accuracy (about 0.75) and test accuracy (about 0.71) were similar. This indicates that our model towards the ideal range in the fitting graph.
+
+   We believe decision trees and convolutional neural networks, which we have already done, are the most promising models for our dataset since we expect the decision boundary to be relatively complex to encompass different items types in the same category. However, we are considering SVM because it is less computationally intensive than neural networks, and the large decision boundary may allow us to further tune parmeters without overfitting.
+   
+
+
+2. **Milestone Summary**
+
+   We created a [new notebook](./CNN.ipynb) to implement a convolutional neural network. After loading the dataset into memory, we convert it into a categorical tensorflow dataset of preprocessed color images divided into batches of 10 and show one such batch. Using this dataset, we train a layered model with a rectified linear activation internal function and a softmax loss function. We use a limited number of epochs (20) to address overfitting. The model has 2 convolutional layers with pooling applied.
+   
+   After training the model, we plot the training and validation loss. We use the trained model to predict the test set, plot the confusion matrix, and display the test loss and accuracy.
+
+   We have also addressed the overfitting issue with our random forest classifier from the previous milestone in order to perform a fair comparison with the convolutional neural network. 
+
+3. **Conclusion**
+
+   There were 2,669 correct predictions and 1081 incorrect. For compost, there were 118 FP and 214 FN predictions. For landfill, there were 470 FP and 421 FN predictions. 
+   For recyclable, there were 493 FP and 446 FN predictions.
+
+   Overall, this model was able to predict images of waste into landfill, compost, or recyclable categories mostly correctly, but with too much error to be used in a high-stakes situation. It was about equally likely to classify false positives and false negatives in the landfill and recyclable categories, but there were more FN than FP classifications for compost. 
+   
+   Compared to the original random forest model, it is slightly less accurate on the test data. Importantly, unlike the original random forest model, it is not severely overfitted. Compared to the random forest model after we addressed overfitting, it is slightly more accurate on the test set.
+   Interestingly, it is much less likely overall to classify images as recyclable and more likely to classify them as landfill or compost than the random forest model.
+
+   In order to improve our CNN, we could experiment further with more layers and different batch sizes. There are already-fine-tuned models for general image classification such as vgg16 which may more successfully classify our data. In order to make our model more applicable, we could change hyperparameters to reflect the importance of false positives and false negatives, such as by indicating that the model should avoid FP predictions for the recyclable category.
 
 
 
