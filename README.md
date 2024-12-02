@@ -93,7 +93,7 @@ As a preprocessing step, we plan on combining the existing 30 waste categories i
 
 2. **Milestone Summary**
 
-   We created a [new notebook](./CNN.ipynb) to implement a convolutional neural network. After loading the dataset into memory, we convert it into a categorical tensorflow dataset of preprocessed color images divided into batches of 10 and show one such batch. Using this dataset, we train a layered model with a rectified linear activation internal function and a softmax loss function. We use a limited number of epochs (20) to address overfitting. The model has 2 convolutional layers with pooling applied.
+   We created a [new notebook](./CNN_supercomputer.ipynb) to implement a convolutional neural network. After loading the dataset into memory, we convert it into a categorical tensorflow dataset of preprocessed color images divided into batches of 10 and show one such batch. Using this dataset, we train a layered model with a rectified linear activation internal function and a softmax loss function. We use a limited number of epochs (20) to address overfitting. The model has 2 convolutional layers with pooling applied.
    
    After training the model, we plot the training and validation loss. We use the trained model to predict the test set, plot the confusion matrix, and display the test loss and accuracy.
 
