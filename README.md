@@ -76,7 +76,7 @@ As a preprocessing step, we plan on combining the existing 30 waste categories i
    * Improvements:
         * Apply additional hyperparameter tuning using techniques like Randomized Search and regularization techniques to improve generalization to unseen data.
         * Extract additional meaningful features, such as texture or shape descriptors, to provide more meaningful inputs to the model.
-        * 
+          
 **Post Milestone 3 Feedback**
 
 Our more generalized model achieved an accuracy of 69% and 67% on our train and test sets respectively with the following fitting graph:
