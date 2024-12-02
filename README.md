@@ -92,12 +92,14 @@ As a preprocessing step, we plan on combining the existing 30 waste categories i
 
 2. **Milestone Summary**
 
-   **Include new work and updates**
+   **Include new work and updates**: 
    We created a [new notebook](./CNN.ipynb) to implement a convolutional neural network. After loading the dataset into memory, we convert it into a categorical tensorflow dataset of preprocessed color images divided into batches of 10. We show one such batch. Using this dataset, we train a layered model with a rectified linear activation internal function and a softmax loss function. 
    
    After training the model, we plot the training and validation loss. We use the trained model to predict the test set, plot the confusion matrix, and display the test loss and accuracy.
 
-3. **Conclusion**
+   We have also addressed the overfitting issue with our random forest classifier from the previous milestone in order to perform a fair comparison with the convolutional neural network. 
+
+4. **Conclusion**
 
    **Results and Discussion: Provide predictions of correct and FP and FN from test dataset. What is the conclusion of your 2nd model? What can be done to improve it?**
 
