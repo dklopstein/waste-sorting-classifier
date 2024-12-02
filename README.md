@@ -54,7 +54,7 @@ As a preprocessing step, we plan on combining the existing 30 waste categories i
 
 3. Evaluate your model and compare training vs. test error
    
-   Our model had an accuracy of 0.8316 on our test set, meaning it had an error of 0.1684.
+   Our model had an accuracy of 0.8316 on our test set, meaning it had an error of 0.1684. After addressing overfitting in Milestone 4, it had an accuracy of 0.6677.
 
 5. Answer the questions: Where does your model fit in the fitting graph?
    
@@ -100,7 +100,10 @@ As a preprocessing step, we plan on combining the existing 30 waste categories i
    There were 2,669 correct predictions and 1081 incorrect. For compost, there were 118 FP and 214 FN predictions. For landfill, there were 470 FP and 421 FN predictions. 
    For recyclable, there were 493 FP and 446 FN predictions.
 
-   Overall, this model was able to predict images of waste into landfill, compost, or recyclable categories mostly correctly, but with too much error to be used in a high-stakes situation. It was about equally likely to classify false positives and false negatives in the landfill and recyclable categories, but there were more FN than FP classifications for compost. Compared to the random forest model, it is slightly less accurate on the test data. Importantly, unlike the original random forest model, it is not severely overfitted. Interestingly, it is much less likely overall to classify images as recyclable and more likely to classify them as landfill or compost than the random forest model.
+   Overall, this model was able to predict images of waste into landfill, compost, or recyclable categories mostly correctly, but with too much error to be used in a high-stakes situation. It was about equally likely to classify false positives and false negatives in the landfill and recyclable categories, but there were more FN than FP classifications for compost. 
+   
+   Compared to the original random forest model, it is slightly less accurate on the test data. Importantly, unlike the original random forest model, it is not severely overfitted. Compared to the random forest model after we addressed overfitting, it is slightly more accurate on the test set.
+   Interestingly, it is much less likely overall to classify images as recyclable and more likely to classify them as landfill or compost than the random forest model.
 
    In order to improve our CNN, we could experiment further with more layers and different batch sizes. There are already-fine-tuned models for general image classification such as vgg16 which may more successfully classify our data. In order to make our model more applicable, we could change hyperparameters to reflect the importance of false positives and false negatives, such as by indicating that the model should avoid FP predictions for the recyclable category.
 
