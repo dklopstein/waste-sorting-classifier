@@ -87,6 +87,9 @@ As a preprocessing step, we plan on combining the existing 30 waste categories i
 
    **What are the next models you are thinking of and why?**
 
+   We believe decision trees and convolutional neural networks, which we have already done, are the most promising models for our dataset. However,  SVM would be more computationally efficient than neural networks, and the large decision boundary SVM offers may help us further address overfitting. 
+
+
 2. **Milestone Summary**
 
    **Include new work and updates**
