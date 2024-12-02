@@ -93,7 +93,7 @@ Our more generalized model achieved an accuracy of 69% and 67% on our train and 
    
    We stopped at 20 epochs (near the left of the fitting graph), as this is where there were steeply diminishing returns in loss.
 
-   Our training accuracy (about 0.75) and test accuracy (about 0.71) were similar. These numbers and the graph indicate that our model is in an ideal range on the fitting graph.
+   Our training accuracy (about 0.75) and test accuracy (about 0.71) were similar and likewise our error. These numbers and the graph indicate that our model is in an ideal range on the fitting graph.
 
 
    We believe decision trees and convolutional neural networks, which we have already done, are the most promising models for our dataset since we expect the decision boundary to be relatively complex to encompass different items types in the same category. If there are enough computing resources available, we will consider more fine-tuned neural networks like VGG16. However, SVMs may also be a good consideration for less computationally intensive models because the large decision boundary may allow us to more quickly and further tune parmeters without overfitting.
