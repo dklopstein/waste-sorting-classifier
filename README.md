@@ -54,7 +54,7 @@ As a preprocessing step, we plan on combining the existing 30 waste categories i
 
 3. Evaluate your model and compare training vs. test error
    
-   Our model had an accuracy of 0.8316 on our test set, meaning it had an error of 0.1684. After addressing overfitting in Milestone 4, it had an accuracy of 0.6677.
+   Our model had an accuracy of 0.8316 on our test set, meaning it had an error of 0.1684. After addressing overfitting in Milestone 4, it had an accuracy of 0.6677 on our test set.
 
 5. Answer the questions: Where does your model fit in the fitting graph?
    
@@ -76,22 +76,30 @@ As a preprocessing step, we plan on combining the existing 30 waste categories i
    * Improvements:
         * Apply additional hyperparameter tuning using techniques like Randomized Search and regularization techniques to improve generalization to unseen data.
         * Extract additional meaningful features, such as texture or shape descriptors, to provide more meaningful inputs to the model.
+        * 
+**Post Milestone 3 Feedback**
+
+Our more generalized model achieved an accuracy of 69% and 67% on our train and test sets respectively with the following fitting graph:
+![image](https://github.com/user-attachments/assets/6d103ad7-d137-4434-9079-128257ec2273)
+
 ## Milestone 4 (CNN)
 [Milestone 4 Notebook](./CNN.ipynb)
 
 1. **Model Fit**
 
-   This is the graph for training and validation loss at different epochs:
-   ![Loss Graph](CNNLossGraph.png) We stopped at 20 epochs as this is where there were steeply diminishing returns in loss.
+   This is the graph for training and validation loss at different epochs (up to 50):
+   ![Loss Graph](CNNLossGraph.png)
+   
+   We stopped at 20 epochs (near the left of the fitting graph), as this is where there were steeply diminishing returns in loss.
 
-   Our training and testing loss were both similar and very low . The training accuracy (about 0.75) and test accuracy (about 0.71) were similar. These numbers and the graph indicate that our model towards the ideal range in the fitting graph.
+   Our training accuracy (about 0.75) and test accuracy (about 0.71) were similar. These numbers and the graph indicate that our model is in an ideal range on the fitting graph.
 
 
-   We believe decision trees and convolutional neural networks, which we have already done, are the most promising models for our dataset since we expect the decision boundary to be relatively complex to encompass different items types in the same category. However, we are considering SVM because it is less computationally intensive than neural networks, and the large decision boundary may allow us to further tune parmeters without overfitting.
+   We believe decision trees and convolutional neural networks, which we have already done, are the most promising models for our dataset since we expect the decision boundary to be relatively complex to encompass different items types in the same category. If there are enough computing resources available, we will consider more fine-tuned neural networks like VGG16. However, SVMs may also be a good consideration for less computationally intensive models because the large decision boundary may allow us to more quickly and further tune parmeters without overfitting.
    
 
 
-2. **Milestone Summary**
+3. **Milestone Summary**
 
    We created a [new notebook](./CNN_supercomputer.ipynb) to implement a convolutional neural network. After loading the dataset into memory, we convert it into a categorical tensorflow dataset of preprocessed color images divided into batches of 10 and show one such batch. Using this dataset, we train a layered model with a rectified linear activation internal function and a softmax loss function. We use a limited number of epochs (20) to address overfitting. The model has 2 convolutional layers with pooling applied.
    
@@ -99,7 +107,7 @@ As a preprocessing step, we plan on combining the existing 30 waste categories i
 
    We have also addressed the overfitting issue with our random forest classifier from the previous milestone in order to perform a fair comparison with the convolutional neural network. 
 
-3. **Conclusion**
+4. **Conclusion**
 
    There were 2,669 correct predictions and 1081 incorrect. For compost, there were 118 FP and 214 FN predictions. For landfill, there were 470 FP and 421 FN predictions. 
    For recyclable, there were 493 FP and 446 FN predictions.
