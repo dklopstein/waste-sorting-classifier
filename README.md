@@ -81,7 +81,11 @@ As a preprocessing step, we plan on combining the existing 30 waste categories i
 
 1. **Model Fit**
 
-   Our training and testing loss were both similar and very low . The training accuracy (about 0.75) and test accuracy (about 0.71) were similar. This indicates that our model towards the ideal range in the fitting graph.
+   This is the graph for training and validation loss at different epochs:
+   ![Loss Graph](CNNLossGraph.png) We stopped at 20 epochs as this is where there were steeply diminishing returns in loss.
+
+   Our training and testing loss were both similar and very low . The training accuracy (about 0.75) and test accuracy (about 0.71) were similar. These numbers and the graph indicate that our model towards the ideal range in the fitting graph.
+
 
    We believe decision trees and convolutional neural networks, which we have already done, are the most promising models for our dataset since we expect the decision boundary to be relatively complex to encompass different items types in the same category. However, we are considering SVM because it is less computationally intensive than neural networks, and the large decision boundary may allow us to further tune parmeters without overfitting.
    
