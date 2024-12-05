@@ -7,12 +7,14 @@ Effective waste management is essential to environmental health. Improper waste 
 
 ### Data Exploration
 
-The dataset has 15,000 pictures of waste classified as plastic, paper, cardboard, glass, metal, organic waste, and textiles intercepted already in a landfill environment. This will help the accuracy of our model since it is devoid of surrounding trash. 
+The dataset has 15,000 pictures of waste classified as plastic, paper, cardboard, glass, metal, organic waste, and textiles intercepted already in a landfill environment. This will help the accuracy of our model since it is devoid of surrounding trash. The plots and results from data exploration can be seen below:
 
-- 15,000 images
-- 30 classes
-- all images 256x256 pixels
-- 500 images of each class
+- Number of classes: 30
+- Number of images: 15000
+- Unique image sizes: [(256, 256)]
+
+The distribution of image sizes shows that each image was 256 by 256 pixels as can be seen below:
+
 
 ### Preprocessing
 
