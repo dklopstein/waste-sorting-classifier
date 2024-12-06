@@ -15,13 +15,13 @@ The dataset has 15,000 pictures of waste classified as plastic, paper, cardboard
 - Number of images per class: 500
 
 The distribution of image sizes showing that each image was 256 by 256 pixels:
-![image][../images/imagesize_distribution.png]
+![image][cse151a-trash/images/imagesize_distribution.png]
 
 The distribution to see the number of images per class:
-![image][../images/imagesperclass.png]
+![image][cse151a-trash/images/imagesperclass.png]
 
 A sample image from each class is below:
-![image][../images/sampleimageeachclass.png]
+![image][cse151a-trash/images/sampleimageeachclass.png]
 
 ### Preprocessing
 
