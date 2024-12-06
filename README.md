@@ -24,7 +24,7 @@ The distribution to see the number of images per class:
 
 A sample image from each class is below:
 
-![Image](./images/sampleimageeachclass.png)
+![Image](./images/sampleimageseachclass.png)
 
 ### Preprocessing
 We classified waste items (the existing 30 waste categories) into these three general categories:
@@ -65,12 +65,21 @@ We classified waste items (the existing 30 waste categories) into these three ge
 | `'styrofoam_food_containers'` | landfill |
 | `'tea_bags'` | compost if plastic free |
 
-
 We split our dataset into 60:20:20 for our training, validation, and test set.
 
 We applied min-max normalization to the pixel data of the images, scaling each pixel value to be within the 0 to 1 range.
 
 ### Model 1
+
+We used a **Random Forest** classifier for our first model to classify trash images. Our dataset contains a class imbalance, with recycling being the dominant class, which could potentially affect model performance. Given that Random Forest is suited for handling large and imbalanced datasets, we chose it as our initial model. The model was trained with basic parameters.
+
+Our model had an accuracy of 0.8316 on our test set, meaning it had an error of 0.1684. After addressing overfitting in Milestone 4, it had an accuracy of 0.6677 on our test set.
+
+This is how our model fit on the fitting graph:
+
+![Fitting Graph](fitting_graph.png)
+   
+Our final model falls on the right of the fitting graph (created using our validation set) with the hyperparameter of n_estimators tuned to 80. 
 
 ### Model 2
 
