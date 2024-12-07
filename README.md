@@ -76,7 +76,7 @@ We used a **Random Forest** classifier for our first model to classify trash ima
 Our initial version of the model had an accuracy of approximately 0.8037 on our test set, meaning it had an error of 0.1963. However, it had a training accuracy of 0.9996, indicating that the model was overfitting. To address this, we manually tuned three key hyperparameters:
 * `n_estimators`: Controls the number of trees in the forest. More trees can improve performance but increase training time.
 * `max_depth`: Limits how deep each tree grows, which helps prevent overfitting.
-* `min_samples_split: Defines the minimum number of samples required to split a node, balancing model complexity and generalization.
+* `min_samples_split`: Defines the minimum number of samples required to split a node, balancing model complexity and generalization.
 
 To tune these hyperparameters, we implemented a custom function, `tune_rf_hyperparameters`, which returned a DataFrame containing accuracy metrics for training, validation, and test splits, as well as the best-performing hyperparameter set. Below is the function call: 
 ```
