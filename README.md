@@ -73,13 +73,93 @@ We applied min-max normalization to the pixel data of the images, scaling each p
 
 We used a **Random Forest** classifier for our first model to classify trash images. Our dataset contains a class imbalance, with recycling being the dominant class, which could potentially affect model performance. Given that Random Forest is suited for handling large and imbalanced datasets, we chose it as our initial model. The model was trained with basic parameters.
 
-Our model had an accuracy of 0.8316 on our test set, meaning it had an error of 0.1684. After addressing overfitting in Milestone 4, it had an accuracy of 0.6677 on our test set.
+Our initial version of the model had an accuracy of approximately 0.8037 on our test set, meaning it had an error of 0.1963. However, it had a training accuracy of 0.9996, indicating that the model was overfitting. To address this, we manually tuned three key hyperparameters:
+* `n_estimators`: Controls the number of trees in the forest. More trees can improve performance but increase training time.
+* `max_depth`: Limits how deep each tree grows, which helps prevent overfitting.
+* `min_samples_split: Defines the minimum number of samples required to split a node, balancing model complexity and generalization.
 
-This is how our model fit on the fitting graph:
+To tune these hyperparameters, we implemented a custom function, `tune_rf_hyperparameters`, which returned a DataFrame containing accuracy metrics for training, validation, and test splits, as well as the best-performing hyperparameter set. Below is the function call: 
+```
+def tune_rf_hyperparameters(X_train_flat, y_train, X_valid_flat, y_valid, X_test_flat, y_test):
+    param_grid = {
+        'n_estimators': [50, 60, 70, 80, 90, 100],
+        'max_depth': [5, 10, 15],     
+        'min_samples_split': [2, 5],
+    }
 
-![Fitting Graph](fitting_graph.png)
+    best_val_acc = 0
+    best_params = None
+    results = []
+
+    for n_estimators in param_grid['n_estimators']:
+        for max_depth in param_grid['max_depth']:
+            for min_samples_split in param_grid['min_samples_split']:
+                
+                rf_model = RandomForestClassifier(
+                    n_estimators=n_estimators,
+                    max_depth=max_depth,
+                    min_samples_split=min_samples_split,
+                    n_jobs=-1,
+                    random_state=42
+                )
+
+                rf_model.fit(X_train_flat, y_train)
+
+                train_acc = accuracy_score(y_train, rf_model.predict(X_train_flat))
+                valid_acc = accuracy_score(y_valid, rf_model.predict(X_valid_flat))
+                test_acc = accuracy_score(y_test, rf_model.predict(X_test_flat))
+
+                print(f"Params: n_estimators={n_estimators}, max_depth={max_depth}, min_samples_split={min_samples_split} | "
+                    f"Train Acc: {train_acc:.3f}, Valid Acc: {valid_acc:.3f}, Test Acc: {test_acc:.3f}")
+
+                # Store results
+                results.append({
+                    'n_estimators': n_estimators,
+                    'max_depth': max_depth,
+                    'min_samples_split': min_samples_split,
+                    'train_acc': train_acc,
+                    'valid_acc': valid_acc,
+                    'test_acc': test_acc
+                })
+
+                if valid_acc > best_val_acc:
+                    best_val_acc = valid_acc
+                    best_params = {
+                        'n_estimators': n_estimators,
+                        'max_depth': max_depth,
+                        'min_samples_split': min_samples_split,
+                    }
+
+    print(f"\nBest Parameters: {best_params}, Best Validation Accuracy: {best_val_acc}")
+
+    df = pd.DataFrame(results)
+    return df, best_params
+```
+Next, we called this function using the training, validation, and test datasets:
+```
+res_df, best_params = tune_rf_hyperparameters(X_train_flat, y_train, X_valid_flat, y_valid, X_test_flat, y_test)
+```
+Using the resulting res_df, we calculated differences in accuracy across training, validation, and test splits to assess model generalization. This helped us filter out overfit models and prioritize configurations with consistent performance across data splits. We computed the following: 
+* `train_valid_diff`: Difference between training and validation accuracy
+* `valid_test_diff`: Difference between validation and test accuracy
+* `train_test_diff`: Difference between training and test accuracy
+We applied a threshold of 0.05 for these differences to filter models and then sorted by test accuracy to identify the best-performing configurations. Below is the code used:
+
+```
+res_df['train_valid_diff'] = abs(res_df['train_acc'] - res_df['valid_acc'])
+res_df['valid_test_diff'] = abs(res_df['valid_acc'] - res_df['test_acc'])
+res_df['train_test_diff'] = abs(res_df['train_acc'] - res_df['test_acc'])
+threshold = 0.05
+
+# Filter models with low differences and good test accuracy
+filtered_df = res_df[(res_df['train_valid_diff'] <= threshold) & (res_df['valid_test_diff'] <= threshold) & (res_df['train_test_diff'] <= threshold)]
+sorted_filtered_df = filtered_df.sort_values(by='test_acc', ascending=False)
+```
+The final model had the following hyperparameters: n_estimators=100, max_depth=5, and min_samples_split=5. This configuration achieved a test accuracy of 0.6683 and a training accuracy of 0.692, demonstrating improved generalization.
+
+Below is a graph illustrating the relationship between different max_depth values and accuracy metrics, showing how deeper trees affected training, validation, and test accuracies:
+![Fitting Graph](images/rf_max_depth_plot.png)
    
-Our final model falls on the right of the fitting graph (created using our validation set) with the hyperparameter of n_estimators tuned to 80. 
 
 ### Model 2
 Our second model was a convolutional neural network. The full code can be found [here](./CNN_supercomputer.ipynb).
