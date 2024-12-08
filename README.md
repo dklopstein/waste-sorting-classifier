@@ -74,11 +74,11 @@ We applied min-max normalization to the pixel data of the images, scaling each p
 We used a **Random Forest** classifier for our first model to classify trash images. Our dataset contains a class imbalance, with recycling being the dominant class, which could potentially affect model performance. Given that Random Forest is suited for handling large and imbalanced datasets, we chose it as our initial model. The model was trained with basic parameters.
 
 Our initial version of the model had an accuracy of approximately 0.8037 on our test set, meaning it had an error of 0.1963. However, it had a training accuracy of 0.9996, indicating that the model was overfitting. To address this, we manually tuned three key hyperparameters:
-* `n_estimators`: Controls the number of trees in the forest. More trees can improve performance but increase training time.
-* `max_depth`: Limits how deep each tree grows, which helps prevent overfitting.
-* `min_samples_split`: Defines the minimum number of samples required to split a node, balancing model complexity and generalization.
+* `n_estimators`: Controls the number of trees in the forest. More trees can improve performance but increase training time. We tested values from 50 to 100 to find the best balance. 
+* `max_depth`: Limits how deep each tree grows. By default, max_depth=None allows trees to expand fully, often leading to the model overfitting. We experimented with depths of 5, 10, and 15 to constrain tree growth and observe the trade-off between model complexity and generalization.
+* `min_samples_split`: Specifies the minimum samples needed to split a node. The default value is 2, allowing fine splits that can lead to overfitting. We tested values of 2 and 5 to balance capturing meaningful patterns while reducing overfitting.
 
-To tune these hyperparameters, we implemented a custom function, `tune_rf_hyperparameters`, which returned a DataFrame containing accuracy metrics for training, validation, and test splits, as well as the best-performing hyperparameter set. Below is the function call: 
+To tune these hyperparameters, we implemented a custom function, `tune_rf_hyperparameters`, which returned a DataFrame containing accuracy metrics for training, validation, and test splits, as well as the best-performing hyperparameter set. Below is the code for the function:
 ```
 def tune_rf_hyperparameters(X_train_flat, y_train, X_valid_flat, y_valid, X_test_flat, y_test):
     param_grid = {
