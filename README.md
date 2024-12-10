@@ -153,11 +153,34 @@ sorted_filtered_df = filtered_df.sort_values(by='valid_acc', ascending=False)
 
 sorted_filtered_df
 ```
-The final model had the following hyperparameters: n_estimators=90, max_depth=7, and min_samples_split=5. This configuration achieved a test accuracy of 0.6597, a validation accuracy of 0.686, and a training accuracy of 0.7524, demonstrating improved generalization.
 
-Below is a graph illustrating the relationship between different max_depth values and accuracy metrics, showing how deeper trees affected training and validation accuracies: 
-![Fitting Graph](images/rf_max_depth_plot.png)
-   
+#### Exploring HOG Features
+To further enhance model performance, we explored using Histogram of Oriented Gradients (HOG) features for image representation. These features were extracted from grayscale versions of the input images to capture edge and texture information. We trained a separate Random Forest classifier on these features, following a similar process for hyperparameter tuning as described earlier: 
+```
+def extract_hog_features(images):
+    hog_features = []
+    for image in images:
+        image_gray = rgb2gray(image)
+        
+        features = hog(
+            image_gray,
+            orientations=9,        
+            pixels_per_cell=(8, 8),
+            cells_per_block=(2, 2),
+            visualize=False  
+        )
+        hog_features.append(features)
+    
+    return np.array(hog_features)
+
+X_train_hog = extract_hog_features(X_train_normalized)
+X_valid_hog= extract_hog_features(X_valid_normalized)
+X_test_hog = extract_hog_features(X_test_normalized)
+
+# Tune hyperparameters to address overfitting
+hog_res_df, best_hog_params = tune_rf_hyperparameters(X_train_hog, y_train, X_valid_hog, y_valid)
+```
+
 
 ### Model 2
 Our second model was a convolutional neural network. The full code can be found [here](./CNN_supercomputer.ipynb).
@@ -261,6 +284,13 @@ print(f'Test Accuracy: {accuracy * 100:.2f}%')
 ### Model 3
 
 ## Results
+
+### Model 1
+The final model had the following hyperparameters: n_estimators=90, max_depth=7, and min_samples_split=5. This configuration achieved a test accuracy of 0.6597, a validation accuracy of 0.686, and a training accuracy of 0.7524, demonstrating improved generalization.
+
+Below is a graph illustrating the relationship between different max_depth values and accuracy metrics, showing how deeper trees affected training and validation accuracies: 
+![Fitting Graph](images/rf_max_depth_accuracy_plot.png)
+   
 
 ## Discussion
 
