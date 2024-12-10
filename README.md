@@ -78,13 +78,13 @@ Our initial version of the model had an accuracy of approximately 0.8037 on our 
 * `max_depth`: Limits how deep each tree grows. By default, max_depth=None allows trees to expand fully, often leading to the model overfitting. We experimented with depths of 5, 10, and 15 to constrain tree growth and observe the trade-off between model complexity and generalization.
 * `min_samples_split`: Specifies the minimum samples needed to split a node. The default value is 2, allowing fine splits that can lead to overfitting. We tested values of 2 and 5 to balance capturing meaningful patterns while reducing overfitting.
 
-To tune these hyperparameters, we implemented a custom function, `tune_rf_hyperparameters`, which returned a DataFrame containing accuracy metrics for training, validation, and test splits, as well as the best-performing hyperparameter set. Below is the code for the function:
+To tune these hyperparameters, we implemented a custom function, `tune_rf_hyperparameters`, which returned a DataFrame containing accuracy metrics for the training and validation sets, as well as the best-performing hyperparameter set. Below is the code for the function:
 ```
-def tune_rf_hyperparameters(X_train_flat, y_train, X_valid_flat, y_valid, X_test_flat, y_test):
+def tune_rf_hyperparameters(X_train_flat, y_train, X_valid_flat, y_valid):
     param_grid = {
         'n_estimators': [50, 60, 70, 80, 90, 100],
-        'max_depth': [5, 10, 15],     
-        'min_samples_split': [2, 5],
+        'max_depth': [5, 7, 10, 12, 15],
+        'min_samples_split': [2, 3, 5, 7, 10],
     }
 
     best_val_acc = 0
@@ -107,10 +107,9 @@ def tune_rf_hyperparameters(X_train_flat, y_train, X_valid_flat, y_valid, X_test
 
                 train_acc = accuracy_score(y_train, rf_model.predict(X_train_flat))
                 valid_acc = accuracy_score(y_valid, rf_model.predict(X_valid_flat))
-                test_acc = accuracy_score(y_test, rf_model.predict(X_test_flat))
 
                 print(f"Params: n_estimators={n_estimators}, max_depth={max_depth}, min_samples_split={min_samples_split} | "
-                    f"Train Acc: {train_acc:.3f}, Valid Acc: {valid_acc:.3f}, Test Acc: {test_acc:.3f}")
+                    f"Train Acc: {train_acc:.3f}, Valid Acc: {valid_acc:.3f}")
 
                 # Store results
                 results.append({
@@ -119,7 +118,6 @@ def tune_rf_hyperparameters(X_train_flat, y_train, X_valid_flat, y_valid, X_test
                     'min_samples_split': min_samples_split,
                     'train_acc': train_acc,
                     'valid_acc': valid_acc,
-                    'test_acc': test_acc
                 })
 
                 if valid_acc > best_val_acc:
@@ -135,29 +133,29 @@ def tune_rf_hyperparameters(X_train_flat, y_train, X_valid_flat, y_valid, X_test
     df = pd.DataFrame(results)
     return df, best_params
 ```
-Next, we called this function using the training, validation, and test datasets:
+Next, we called this function using the training and validation datasets:
 ```
-res_df, best_params = tune_rf_hyperparameters(X_train_flat, y_train, X_valid_flat, y_valid, X_test_flat, y_test)
+res_df, best_params = tune_rf_hyperparameters(X_train_flat, y_train, X_valid_flat, y_valid)
 ```
-Using the resulting res_df, we calculated differences in accuracy across training, validation, and test splits to assess model generalization. This helped us filter out overfit models and prioritize configurations with consistent performance across data splits. We computed the following: 
-* `train_valid_diff`: Difference between training and validation accuracy
-* `valid_test_diff`: Difference between validation and test accuracy
-* `train_test_diff`: Difference between training and test accuracy
-We applied a threshold of 0.05 for these differences to filter models and then sorted by test accuracy to identify the best-performing configurations. Below is the code used:
+Using the resulting res_df, we calculated differences in accuracy across training and validation to assess model generalization. This helped us filter out overfit models and prioritize configurations with consistent performance across data splits. We computed `train_valid_diff`, the difference between training and validation accuracy for each row in the resulting dataframe. 
+
+We applied a threshold of 0.1 to filter models that had a `train_valid_diff` of over 10% to remove models that overfitting and then sorted by validation accuracy to identify the best-performing configurations. Below is the code used:
 
 ```
 res_df['train_valid_diff'] = abs(res_df['train_acc'] - res_df['valid_acc'])
-res_df['valid_test_diff'] = abs(res_df['valid_acc'] - res_df['test_acc'])
-res_df['train_test_diff'] = abs(res_df['train_acc'] - res_df['test_acc'])
-threshold = 0.05
+threshold = 0.1
 
-# Filter models with low differences and good test accuracy
-filtered_df = res_df[(res_df['train_valid_diff'] <= threshold) & (res_df['valid_test_diff'] <= threshold) & (res_df['train_test_diff'] <= threshold)]
-sorted_filtered_df = filtered_df.sort_values(by='test_acc', ascending=False)
+# Filter models that have low differences between training and validation accuracy
+filtered_df = res_df[(res_df['train_valid_diff'] <= threshold)]
+
+# Sort by validation accuracy
+sorted_filtered_df = filtered_df.sort_values(by='valid_acc', ascending=False)
+
+sorted_filtered_df
 ```
-The final model had the following hyperparameters: n_estimators=100, max_depth=5, and min_samples_split=5. This configuration achieved a test accuracy of 0.6683 and a training accuracy of 0.692, demonstrating improved generalization.
+The final model had the following hyperparameters: n_estimators=90, max_depth=7, and min_samples_split=5. This configuration achieved a test accuracy of 0.6597, a validation accuracy of 0.686, and a training accuracy of 0.7524, demonstrating improved generalization.
 
-Below is a graph illustrating the relationship between different max_depth values and accuracy metrics, showing how deeper trees affected training, validation, and test accuracies:
+Below is a graph illustrating the relationship between different max_depth values and accuracy metrics, showing how deeper trees affected training and validation accuracies: 
 ![Fitting Graph](images/rf_max_depth_plot.png)
    
 
