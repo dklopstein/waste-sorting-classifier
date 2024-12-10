@@ -288,7 +288,8 @@ print(f'Test Accuracy: {accuracy * 100:.2f}%')
 ### Model 1
 The final model had the following hyperparameters: n_estimators=90, max_depth=7, and min_samples_split=5. This configuration achieved a test accuracy of 0.6597, a validation accuracy of 0.686, and a training accuracy of 0.7524, demonstrating improved generalization.
 
-Below is a graph illustrating the relationship between different max_depth values and accuracy metrics, showing how deeper trees affected training and validation accuracies: 
+Below is a graph illustrating the relationship between different max_depth values and accuracy metrics, showing how deeper trees affected training and validation accuracies:
+
 ![Fitting Graph](images/rf_max_depth_accuracy_plot.png)
 
 #### Performance Comparison with HOG Features
