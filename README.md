@@ -279,7 +279,7 @@ loss, accuracy = model.evaluate(test_batches, verbose=1)
 print(f'Test Loss: {loss}')
 print(f'Test Accuracy: {accuracy * 100:.2f}%')
 ```
-
+#### 
 
 ### Model 3
 
@@ -290,6 +290,14 @@ The final model had the following hyperparameters: n_estimators=90, max_depth=7,
 
 Below is a graph illustrating the relationship between different max_depth values and accuracy metrics, showing how deeper trees affected training and validation accuracies: 
 ![Fitting Graph](images/rf_max_depth_accuracy_plot.png)
+
+#### Performance Comparison with HOG Features
+To evaluate the potential of Histogram of Oriented Gradients (HOG) features, we trained a Random Forest classifier on these features, after tuning the model's hyperparameters to address overfitting. The classifier was trained with 80 estimators, max_depth of 7, and min_samples_split of 3. The performance of the model with HOG features was as follows:
+* Test accuracy: 0.6217
+* Validation accuracy: 0.6387
+* Training accuracy: 0.7286
+  
+Despite tuning the hyperparameters, the model with HOG features did not outperform the original feature-based model, which achieved a test accuracy of 0.6597 and a validation accuracy of 0.686.
    
 
 ## Discussion
