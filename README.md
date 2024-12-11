@@ -212,7 +212,7 @@ train_batches, val_batches, test_batches = [to_gen(df) for df in pandas_dfs]
 
 We created a Sequential convolutional neural network model using keras. The model consisted of an input layer, a convolutional hidden layer with a 3 X 3 kernel size, 12 filters, and relu activation function, a max pooling layer, another convolutional hidden layer with a 3 X 3 kernel size, 24 filters, and relu acivation function, another max pooling layer, a dropout layer to deactivate 25% of input units, a layer to flatten data, a dense hidden layer with a relu activation function, a dropout layer to deactiveat 50% of input units, and a dense output layer with a softmax activation function:
 
-![Model Summary](images/CNNSummary.png.png)<br/>*Convolutional Neural Network Model Summary*<br><br>
+![Model Summary](images/CNNSummary.png)<br/>*Convolutional Neural Network Model Summary*<br><br>
 
 We compiled using cross entropy loss and a learning rate of 0.001. We trained the model with 12 epochs and a batch size of 1.
 
