@@ -183,38 +183,38 @@ hog_res_df, best_hog_params = tune_rf_hyperparameters(X_train_hog, y_train, X_va
 
 
 ### Model 2
-Our second model was a convolutional neural network. The full code can be found [here](./CNN_supercomputer.ipynb).
+Our second model was a convolutional neural network. The full code can be found [here](./CNN.ipynb).
 
-We converted the split pandas datasets into a tensorflow dataset of rgb images: 
+We converted the split pandas datasets into a categorical tensorflow dataset of rgb images separated into batch sizes of 32: 
 ```
-def to_tensorflow(df, shuffle=True):
+def to_gen(df, shuffle=True):
     """
-   Convert pandas df to tensorflow dataset.
+    Convert pandas df to tensorflow image generator.
     ARGS:
         df: pandas df
     RETURNS 
         gen: tensorflow dataset
     """
-    preprocess = tf.keras.applications.vgg16.preprocess_input # preprocessing function for CNN 
+    #preprocess = tf.keras.applications.vgg16.preprocess_input # preprocessing function for CNN
+    rescale=1./255
     target_size=(224,224) # set the size of the images
     color_mode='rgb' # set the type of image
     class_mode= 'categorical' # set the class mode
     batch_size=32  # set the batch size 
-    gen=ImageDataGenerator(preprocessing_function=preprocess).flow_from_dataframe(df, 
+    gen=ImageDataGenerator(rescale=rescale).flow_from_dataframe(df, 
           x_col='image_path',
           y_col='category', target_size=target_size, color_mode=color_mode,
           class_mode=class_mode, batch_size=batch_size, shuffle=shuffle)
     return gen
-pandas_dfs = [train_df, val_df]
-train_batches, val_batches = [to_tensorflow(df) for df in pandas_dfs]
-test_batches = to_tensorflow(test_df, shuffle=False) # don't shuffle test batch
+pandas_dfs = [train_df, val_df, test_df]
+train_batches, val_batches, test_batches = [to_gen(df) for df in pandas_dfs]
 ```
 
-We created a Sequential convolutional neural network model using keras. We used 2 convolutional hidden layers with a 3 X 3 kernel size and relu activation function, max pooling, and a Dense output layer with a softmax activation function:
+We created a Sequential convolutional neural network model using keras. The model consisted of an input layer, 2 sets of a convolutional hidden layer with a 3 X 3 kernel size and relu activation function followed by a max max pooling layer, a Dropout layer to deactivate 25% of input units, a layer to flatten data, a Dense hidden layer with a relu activation function, a Dropout layer to deactiveat 50% of input units, and a Dense output layer with a softmax activation function:
 
-![Model Summary](https://github.com/user-attachments/assets/027359d3-c358-4de7-9aa3-2dc40ca43ed2) <br/>*Convolutional Neural Network Model Summary*<br><br>
+![Model Summary](images/CNNSummary.png.png)<br/>*Convolutional Neural Network Model Summary*<br><br>
 
-We compiled using cross entropy loss and a learning rate of 0.001. We trained the model with 20 epochs and a batch size of 1.
+We compiled using cross entropy loss and a learning rate of 0.001. We trained the model with 12 epochs and a batch size of 1.
 
 ```
 model.compile(optimizer=Adam(learning_rate=0.001), loss='categorical_crossentropy', metrics=['accuracy'])
@@ -222,10 +222,8 @@ history = model.fit(x=train_batches,
     steps_per_epoch=len(train_batches),
     validation_data=val_batches,
     validation_steps=len(val_batches),
-    epochs=20,
-    verbose=2,
-    workers=-1,
-    use_multiprocessing=True,
+    epochs=12,
+    verbose=1,
 )
 ```
 
