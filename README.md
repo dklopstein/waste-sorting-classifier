@@ -296,7 +296,7 @@ To evaluate the potential of Histogram of Oriented Gradients (HOG) features, we 
   
 Despite tuning the hyperparameters, the model with HOG features did not outperform the original feature-based model, which achieved a test accuracy of 0.6597 and a validation accuracy of 0.686.
    
-### Model 3
+### Model 2
 ![CNN Confusion Matrix](images/CNNConfusionMatrixAfterTuning.png)
 Our CNN accurately classified 75% of images into landfill, recyclable, or compost, with a loss of 0.733. 
 
