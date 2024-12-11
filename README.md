@@ -305,6 +305,19 @@ At 12 epochs (where we stopped the model to predict the test set), the training 
 ![CNN Accuracy Graph](images/CNNAccuracyGraphAfterTuning.png)
 
 ## Discussion
+This is where you will discuss the why, and your interpretation and your though process from beginning to end. This will mimic the sections you have created in your methods section as well as new sections you feel you need to create. You can also discuss how believable your results are at each step. You can discuss any short comings. It's ok to criticize as this shows your intellectual merit, as to how you are thinking about things scientifically and how you are able to correctly scrutinize things and find short comings. In science we never really find the perfect solution, especially since we know something will probably come up int he future (i.e. donkeys) and mess everything up. If you do it's probably a unicorn or the data and model you chose are just perfect for each other!
+
+### Data Exploration and Preprocessing
+We had a large dataset of 15000 studio and real-world images divided into 30 classes. Many were similar (e.g. 'aerosol_cans' and 'aluminum_food_cans'), so we chose to reduce the classes to the 3 high-level categories of 'recyclable', 'landfill', and 'waste' to allow our models to capture similarities between different classes in the same high-level category and generalize to images outside of the classes in the dataset. 
+
+This may have limited accuracy by removing useful information about the specific class of an image, forcing our model to accomodate by creating more complex decision boundaries. It may have been better process predications into 'recyclable', 'landfill', and 'waste' afterwards and combine classes into several less high-level categories such as 'cans' or simply not combine classes at all.
+
+### Model 1
+
+### Model 2
+
+### Comparing Models
+idk if this should be a section, but it seems like maybe possibly useful
 
 ## Conclusion
 
