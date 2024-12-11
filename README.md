@@ -176,11 +176,23 @@ def extract_hog_features(images):
 X_train_hog = extract_hog_features(X_train_normalized)
 X_valid_hog= extract_hog_features(X_valid_normalized)
 X_test_hog = extract_hog_features(X_test_normalized)
-
-# Tune hyperparameters to address overfitting
-hog_res_df, best_hog_params = tune_rf_hyperparameters(X_train_hog, y_train, X_valid_hog, y_valid)
 ```
 
+The same custom function, `tune_rf_hyperparameters`, was used to address the overfitting with HOG features being used. Then, the same filtering was done to find the best-performing hyperparameter set: 
+```
+# Tune hyperparameters to address overfitting
+hog_res_df, best_hog_params = tune_rf_hyperparameters(X_train_hog, y_train, X_valid_hog, y_valid)
+
+hog_res_df['train_valid_diff'] = abs(hog_res_df['train_acc'] - hog_res_df['valid_acc'])
+threshold = 0.1
+
+# Filter models that have low differences between training and validation accuracy
+filtered_hog_df = hog_res_df[(hog_res_df['train_valid_diff'] <= threshold)]
+
+# Sort by validation accuracy
+sorted_filtered_hog_df = filtered_hog_df.sort_values(by='valid_acc', ascending=False)
+sorted_filtered_hog_df
+```
 
 ### Model 2
 Our second model was a convolutional neural network. The full code can be found [here](./CNN.ipynb).
@@ -282,17 +294,14 @@ print(f'Test Accuracy: {accuracy * 100:.2f}%')
 ## Results
 
 ### Model 1
-The final model had the following hyperparameters: n_estimators=90, max_depth=7, and min_samples_split=5. This configuration achieved a test accuracy of 0.6597, a validation accuracy of 0.686, and a training accuracy of 0.7524, demonstrating improved generalization.
+The final model had the following hyperparameters: `n_estimators`=90, `max_depth`=7, and `min_samples_split`=5. This configuration achieved a test accuracy of 0.6597, a validation accuracy of 0.686, and a training accuracy of 0.7524, demonstrating improved generalization.
 
 Below is a graph illustrating the relationship between different max_depth values and accuracy metrics, showing how deeper trees affected training and validation accuracies:
 
 ![Fitting Graph](images/rf_max_depth_accuracy_plot.png)
 
-#### Performance Comparison with HOG Features
-To evaluate the potential of Histogram of Oriented Gradients (HOG) features, we trained a Random Forest classifier on these features, after tuning the model's hyperparameters to address overfitting. The classifier was trained with 80 estimators, max_depth of 7, and min_samples_split of 3. The performance of the model with HOG features was as follows:
-* Test accuracy: 0.6217
-* Validation accuracy: 0.6387
-* Training accuracy: 0.7286
+#### Performance Comparison with Histogram of Oriented Gradients (HOG) Features
+The final model trained with the HOG features had the following hyperparameters: `n_estimators`=80, `max_depth`=7, `min_samples_split`=3. This model achieved a test accuracy of 0.6217, a validation accuracy of 0.6387, and a training accuracy of 0.7286.
   
 Despite tuning the hyperparameters, the model with HOG features did not outperform the original feature-based model, which achieved a test accuracy of 0.6597 and a validation accuracy of 0.686.
    
