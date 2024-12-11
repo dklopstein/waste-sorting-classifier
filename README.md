@@ -210,7 +210,7 @@ pandas_dfs = [train_df, val_df, test_df]
 train_batches, val_batches, test_batches = [to_gen(df) for df in pandas_dfs]
 ```
 
-We created a Sequential convolutional neural network model using keras. The model consisted of an input layer, 2 sets of a convolutional hidden layer with a 3 X 3 kernel size and relu activation function followed by a max max pooling layer, a Dropout layer to deactivate 25% of input units, a layer to flatten data, a Dense hidden layer with a relu activation function, a Dropout layer to deactiveat 50% of input units, and a Dense output layer with a softmax activation function:
+We created a Sequential convolutional neural network model using keras. The model consisted of an input layer, a convolutional hidden layer with a 3 X 3 kernel size, 12 filters, and relu activation function, a max pooling layer, another convolutional hidden layer with a 3 X 3 kernel size, 24 filters, and relu acivation function, another max pooling layer, a dropout layer to deactivate 25% of input units, a layer to flatten data, a dense hidden layer with a relu activation function, a dropout layer to deactiveat 50% of input units, and a dense output layer with a softmax activation function:
 
 ![Model Summary](images/CNNSummary.png.png)<br/>*Convolutional Neural Network Model Summary*<br><br>
 
@@ -277,9 +277,7 @@ loss, accuracy = model.evaluate(test_batches, verbose=1)
 print(f'Test Loss: {loss}')
 print(f'Test Accuracy: {accuracy * 100:.2f}%')
 ```
-#### 
 
-### Model 3
 
 ## Results
 
