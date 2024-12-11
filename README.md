@@ -34,7 +34,7 @@ We classified waste items (the existing 30 waste categories) into these three ge
 
 | label | category/class |
 |:------|:---------------|
-| `'aerosol_cans'` | if empty recyclable, otherwise landfill |
+| `'aerosol_cans'` | recyclable |
 | `'aluminum_food_cans'` | recyclable |
 | `'aluminum_soda_cans'` | recyclable |
 | `'cardboard_boxes'` | recyclable |
@@ -50,8 +50,8 @@ We classified waste items (the existing 30 waste categories) into these three ge
 | `'magazines'` | recyclable |
 | `'newspaper'` | recyclable |
 | `'office_paper'` | recyclable |
-| `'paper_cups'` | recyclable as long as not wax coated |
-| `'plastic_cup_lids'` | recyclable? |
+| `'paper_cups'` | landfill |
+| `'plastic_cup_lids'` | landfill |
 | `'plastic_detergent_bottles'` | recyclable |
 | `'plastic_food_containers'` | recyclable |
 | `'plastic_shopping_bags'` | landfill |
@@ -63,7 +63,7 @@ We classified waste items (the existing 30 waste categories) into these three ge
 | `'steel_food_cans'` | recyclable |
 | `'styrofoam_cups'` | landfill |
 | `'styrofoam_food_containers'` | landfill |
-| `'tea_bags'` | compost if plastic free |
+| `'tea_bags'` | compost |
 
 We split our dataset into 60:20:20 for our training, validation, and test set.
 
