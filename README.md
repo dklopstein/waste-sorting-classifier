@@ -420,10 +420,9 @@ Name:
 Title: 
 Contribution: 
 
-Name: 
+Name: Serena Xie
 Title: 
-Contribution: 
-
+Contribution: Initial fitting graph for Random Forest, function for recategorizing data into 3 classes (recyclable, landfill, compost), CNN preprocessing + model generation + train-validation testing + tuning + fitting graph + confusion matrix (all of CNN.ipynb) thanks to ample supercomputer access.
 
 Name: Arthur Utecht
 Title: 
