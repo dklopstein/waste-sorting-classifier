@@ -450,7 +450,7 @@ Contribution: Initial fitting graph for Random Forest, function for recategorizi
 
 Name: Arthur Utecht
 
-Title: 
+Title: Writer (Mostly)
 
-Contribution: Collaborated with group to choose goal and dataset. Collaborated with group to write abstract. Plotted data distribution and wrote (unused) function to split classes. Tried implementing HOG feature extraction and CNN (threw errors, so not the code used in notebooks). Helped write Methods, Results, and Discusssion section of README. Actively discussed errors and decisions with groupmates. Analyzed results and wrote Milestone 4 README.
+Contribution: Collaborated with group to choose goal and dataset. Collaborated with group to write abstract. Plotted data distribution and wrote (unused) function to split classes. Helped research models and preprocessing techniques. Tried implementing HOG feature extraction and CNN (threw errors, so not the code used in notebooks). Actively discussed errors and decisions with groupmates. Analyzed results and wrote Milestone 4 README. Collaborated to write Methods, Results, Discusssion, and Conclusion section of final README and reviewed all sections.
 
