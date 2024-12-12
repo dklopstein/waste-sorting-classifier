@@ -447,8 +447,7 @@ Name: Serena Xie
 
 Title: Project Lead and Coder
 
-Contribution: Initial fitting graph for Random Forest, function for recategorizing data into 3 classes (recyclable, landfill, compost), CNN preprocessing + model generation + train-validation testing + tuning + fitting graph + confusion matrix (all of CNN.ipynb) thanks to ample supercomputer access.
-
+Contribution: Communicated expectations for deadlines and feedback from sessions with teaching staff. Wrote Milestone 3 README and provided feedback and corrections for subsequent READMEs. Coded initial fitting graph for Random Forest, determined classes for preprocessing (recyclable, landfill, compost), and coded CNN preprocessing/model generation/train-validation testing/fitting graph/tuning/confusion matrix (CNN.ipynb) due to sole supercomputer access. Maintained constant communication with group during CNN model development/testing process to recieve feedback and ensure rest of team was up to date.
 
 Name: Arthur Utecht
 
