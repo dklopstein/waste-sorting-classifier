@@ -158,7 +158,7 @@ sorted_filtered_df = filtered_df.sort_values(by='valid_acc', ascending=False)
 
 sorted_filtered_df
 ```
-
+This resulted in the following hyperparameters: `n_estimators`=90, `max_depth`=7, and `min_samples_split`=5.
 #### Exploring HOG Features
 We also explored using Histogram of Oriented Gradients (HOG) features for image representation. These features were extracted from grayscale versions of the input images to capture edge and texture information. We trained a separate Random Forest classifier on these features, following a similar process for hyperparameter tuning as described earlier: 
 ```
@@ -198,7 +198,7 @@ filtered_hog_df = hog_res_df[(hog_res_df['train_valid_diff'] <= threshold)]
 sorted_filtered_hog_df = filtered_hog_df.sort_values(by='valid_acc', ascending=False)
 sorted_filtered_hog_df
 ```
-
+This resulted in the following hyperparameters: `n_estimators`=80, `max_depth`=7, `min_samples_split`=3.
 ### Model 2
 Our second model was a convolutional neural network. The full code can be found [here](./CNN.ipynb).
 
@@ -303,9 +303,9 @@ print(f'Test Accuracy: {accuracy * 100:.2f}%')
 
 ### Model 1
 
-Our initial version of the model had an accuracy of approximately 0.8037 on our test set, meaning it had an error of 0.1963. However, it had a training accuracy of 0.9996, indicating that the model was overfitting. 
+Our initial version of the model had an accuracy of approximately 0.8037 on our test set, meaning it had an error of 0.1963. It had a training accuracy of 0.9996.
 
-The final model had the following hyperparameters: `n_estimators`=90, `max_depth`=7, and `min_samples_split`=5. This configuration achieved a test accuracy of 0.6597, a validation accuracy of 0.686, and a training accuracy of 0.7524, demonstrating improved generalization.
+ The tuned configuration achieved a test accuracy of 0.6597, a validation accuracy of 0.686, and a training accuracy of 0.7524.
 
 ![Fitting Graph](images/rf_max_depth_accuracy_plot.png)
 <br/>
@@ -318,29 +318,30 @@ The relationship between different max_depth values and accuracy metrics, showin
 **Figure 6: Random Forest Confusion Matrix.** Based on the confusion matrix generated from the random forest model we can calculate the precision and recall from each class.
 <br><br>
 
-Then for each class our precision and recall are roughly .8355 and .3215 for compost, .84 and .3526 for landfill, and .6147 and .9615 for recyclable.
+
+For compost, the precision was 0.8355 and the recall was 0.3215. For landfill, the precision was 0.84 and the recall was 0.3526. For recyclable, the precision was 0.6147 and the recall was 0.9615.
 
 
-The model trained with the HOG features had the following hyperparameters: `n_estimators`=80, `max_depth`=7, `min_samples_split`=3. This model achieved a test accuracy of 0.6217, a validation accuracy of 0.6387, and a training accuracy of 0.7286.
+ This model achieved a test accuracy of 0.6217, a validation accuracy of 0.6387, and a training accuracy of 0.7286.
 
 ![RF HOG Confusion](images/rf_hog_confusion_matrix.png)
 <br/>
 **Figure 7: Random Forest Confusion Matrix with HOG Features.** Based on the confusion matrix generated from the random forest model we can calculate the precision and recall from each class.
 <br><br>
 
-
-Then for each class our precision and recall are roughly .9091 and .1266 for compost, .8883 and .2892 for landfill, and .5797 and .9817 for recyclable. 
-
-Despite tuning the hyperparameters, the model with HOG features did not outperform the original feature-based model.
+For compost, our precision and recall were 0.9091 and 0.1266. For landfill, our precision and recall were 0.8883 and 0.2892. For recyclable, our precision and recall were 0.5797 and 0.9817. 
    
 ### Model 2
+
 
 ![CNN Confusion Matrix](images/CNNConfusionMatrixAfterTuning.png)
 <br/>
 **Figure 8: Confusion Matrix.** We can see how well Model 2 performed by comporing the true labels and predicted labels across all classes.
 <br><br>
 
-Our CNN accurately classified 75% of images into landfill, recyclable, or compost, with a loss of 0.733.
+Our CNN accurately classified 75% of images into landfill, recyclable, or compost, with a loss of 0.733. 
+
+It had a precision and recall of 0.7251308901 and 0.7084398977 for compost, 0.76849642 and 0.6564729867 for landfill, and 0.7859550562 and 0.8593366093 for recyclable.
 
 | Label      | TP       | TN       | FP     | FN     | Precision    | Recall       | Accuracy     |
 |------------|----------|----------|--------|--------|--------------|--------------|--------------|
@@ -366,7 +367,6 @@ At 12 epochs the training accuracy was about 0.83 while the validation accuracy 
 <br><br>
 
 ## Discussion
-This is where you will discuss the why, and your interpretation and your though process from beginning to end. This will mimic the sections you have created in your methods section as well as new sections you feel you need to create. You can also discuss how believable your results are at each step. You can discuss any short comings. It's ok to criticize as this shows your intellectual merit, as to how you are thinking about things scientifically and how you are able to correctly scrutinize things and find short comings. In science we never really find the perfect solution, especially since we know something will probably come up int he future (i.e. donkeys) and mess everything up. If you do it's probably a unicorn or the data and model you chose are just perfect for each other!
 
 ### Data Exploration and Preprocessing
 We had a large dataset of 15000 studio and real-world images divided into 30 classes. Many were similar (e.g. 'aerosol_cans' and 'aluminum_food_cans'), so we chose to reduce the classes to the 3 high-level categories of 'recyclable', 'landfill', and 'waste' to allow our models to capture similarities between different classes in the same high-level category and generalize to images outside of the classes in the dataset. 
@@ -379,7 +379,7 @@ We used min-max normalization because pixel values were not normally distributed
 
 Our dataset was large and imbalanced, and we anticipated complex decision boundaries due to the wide range of objects in the same class. Given that Random Forest is suited for handling large and imbalanced datasets with complex decision bounderies we chose a Random Forest classifier to capture this behavior in different subtrees. Still, our dataset contained a class imbalance, with recycling being the dominant class, which may have affected model perfromance.
 
-Becaues our first model was overfitted, we used tuned the 'n_estimators', 'max_depth', and 'min_samples_split' hyperparameters with a custom function. Since we prioritized addressing overfitting, we only considered models with a difference between training and validation accuracy of less than or equal to 0.1 to filter out overfit models and prioritize configurations with consistent performance across data splits.
+The extremely high training accuracy of our first model indicated that it was overfitted, so we decided to tune the 'n_estimators', 'max_depth', and 'min_samples_split' hyperparameters with a custom function. Since we prioritized addressing overfitting, we only considered models with a difference between training and validation accuracy of less than or equal to 0.1 to filter out overfit models and prioritize configurations with consistent performance across data splits.
 
 
 We additionally further preprocessed data for Model 1 by computing Histogram of Oriented Gradients features for input images to extract meaningful features from raw pixels and further refine model performance.
