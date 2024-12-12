@@ -406,15 +406,20 @@ Thought the accuracy was highest for the 'compost' category, this seems to have 
 
 ## Conclusion
 
-Overall, the models classified images into the categories 'compost', 'landfill', and 'recyclable' with acceptable accuracy. With the current accuracy, the models could not be used independently to classify waste. However, they may be applicable in alerting consumers that waste should likely be disposed of in another bin. This would reduce mistakes and encourage consumers to think more about properly disposing of waste. Though the Random Forest classifier was not as accurate as the CNN, it may be better suited to this task due to lower computational costs.
+With the current accuracy, the models could not be used independently to classify waste. However, they may be applicable in alerting consumers that waste should likely be disposed of in another bin. This would reduce mistakes and encourage consumers to think more about properly disposing of waste. Though the Random Forest classifier was not as accurate as the CNN, it may be better suited to this task due to lower computational costs.
 
 In the future, model accuracy may be improved by altering data preprocessing. Given the disparate items in the same category, it would be worthwhile to train models to identify the original 30 classes in the dataset. This may generalize less well to objects which do not fall into one of these classes, but it will preserve useful high-level information during training and may demand a less complex model.
 
-Alternatively, given our imbalanced classes, it our model may more accurately classify a single category. This is especially true for 'compost', where 'compost' was rarely correctly predicted because there were so many 'recyclable' and 'landfill' images.
+Alternatively, given our imbalanced classes, it our model may more accurately classify a single category. This is especially true for 'compost', where 'compost' was rarely correctly predicted because there were so many 'recyclable' and 'landfill' images. 
 
 Another option to address the imbalanced classes is to modify our loss function to more heavily penilize certain misclassifications. For example, we might more heavily penalize false negatives for "compost". This method would also allow us to tune our model for specific applications - heavily penalizing false negatives for "compost" would be helpful for encouraging consumers to compost more.
 
 Finally, given the large dataset, we might train our models with a certain subset of the data to avoid this imbalance altogether.
+
+The Random Forest classifier would especially benefit from these optimizations because it struggled more with the imbalanced data.
+
+Unfortunately, the dataset itself was not representative of images of waste which might be encountered outside of training. For this reason, it may be helpful to thoroughly explore different datasets or manually select images from this dataset (though the latter option introduces a clear opportunity for bias).
+
 
 ## Statement of Collaboration
 
