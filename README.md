@@ -427,7 +427,7 @@ Name: Arjun Kohli
 
 Title: Writer
 
-Contribution: Contributed to the foundational stages of the project with finding the datasets, writing the abstract, and then to writing the first milestone readme, helping compile information for the final project report, performing preprocessing on the data locally to make sure that the data is in order. Coordinated with everyone and ensured clear communication to make sure work assigned by the project lead was completed.
+Contribution: Contributed to the foundational stages of the project with finding the dataset, writing the abstract, and then to writing the first milestone readme, helping compile information for the final project report, performing preprocessing on the data locally to make sure that the data is in order. Coordinated with everyone and ensured clear communication to make sure work assigned by the project lead was completed.
 
 Name: Derek Klopstein
 
