@@ -315,7 +315,7 @@ The count of true positives, true negatives, false positives, and false negative
 |     landfill      |     346    |     1366    |     653    |     635    |
 |     recyclable    |     975    |     603     |     769    |     653    |
 
-At 12 epochs (where we stopped the model to predict the test set), the training accuracy was about 0.83 while the validation accuracy was about 0.75. The training loss was about 0.4, and the validation loss was about 0.7.
+At 12 epochs (where we stopped the model to predict prevent overfitting on the test set), the training accuracy was about 0.83 while the validation accuracy was about 0.75. The training loss was about 0.4, and the validation loss was about 0.7. Below is a fitting graph comparing training and validation loss and accuracy accross a total of 20 epochs. 
 ![CNN Loss Graph](images/CNNLossGraphAfterTuning.png)
 ![CNN Accuracy Graph](images/CNNAccuracyGraphAfterTuning.png)
 
@@ -325,13 +325,13 @@ This is where you will discuss the why, and your interpretation and your though 
 ### Data Exploration and Preprocessing
 We had a large dataset of 15000 studio and real-world images divided into 30 classes. Many were similar (e.g. 'aerosol_cans' and 'aluminum_food_cans'), so we chose to reduce the classes to the 3 high-level categories of 'recyclable', 'landfill', and 'waste' to allow our models to capture similarities between different classes in the same high-level category and generalize to images outside of the classes in the dataset. 
 
-This may have limited accuracy by removing useful information about the specific class of an image, forcing our model to accomodate by creating more complex decision boundaries. It may have been better process predications into 'recyclable', 'landfill', and 'waste' afterwards and combine classes into several less high-level categories such as 'cans' or simply not combine classes at all.
+This may have limited accuracy by removing useful information about the specific class of an image, forcing our model to accomodate by creating more complex decision boundaries. It may have been better to label images as 'recyclable', 'landfill', and 'waste' after first combining classes into several less high-level categories (eg.'cans') or simply not combine classes at all.
 
-We used min-max normalization because pixel values were not normally distributed.
+
 
 ### Model 1
 
-We anticipated the decision boundary would need to be complex to handle the wide range of objects in the same class, and our dataset was large and imbalanced, so we chose a Random Forest classifier to capture this behavior in different subtrees. TODO: I think some of the discussion of why we chose model 1 hyperparameters should go here
+For Model 1, we used min-max normalization because pixel values were not normally distributed. We anticipated the decision boundary would need to be complex to handle the wide range of objects in the same class, and our dataset was large and imbalanced, so we chose a Random Forest classifier to capture this behavior in different subtrees. TODO: I think some of the discussion of why we chose model 1 hyperparameters should go here
 
 We additionally further preprocessed data for Model 1 by computer Histogram of Oriented Gradients features for input images to extract meaningful features from raw pixels.
 
@@ -340,11 +340,11 @@ Unexpectedly, the Random Forest classifier without HOG feature extraction slight
 ### Model 2
 For our second model, we chose a convolutional neural network to better handle the aforementioned complex decision boundary and interpret many pixel values divorced from higher-level meaning. 
 
-In addition to referencing the results of a grid search, we chose our final convolutional neural network hyperparameters specifically to maximize accuracy and address overfitting from previous models and excessive computational cost. We found a lower number of filters in the convolutional layers actually increased accuracy and reduced cost. Similarly, dropout layers addressed overfitting, and feeding fewer inputs into the final dense layer reduced the complexity of the final decision. The training accuracy and loss quickly and dramatically separate from the validation accuracy and loss after 12 epochs, so we limited the fitting to 12 epochs.
+In addition to referencing the results of a grid search, we chose our final convolutional neural network hyperparameters specifically to maximize accuracy and address overfitting from previous models and excessive computational cost. We found a lower number of filters in the convolutional layers actually increased accuracy and reduced costs in model training time and resources. Similarly, dropout layers addressed overfitting, and feeding fewer inputs into the final dense layer reduced the complexity of the final decision. The training accuracy and loss quickly and dramatically separate from the validation accuracy and loss after 12 epochs, so we limited the fitting to 12 epochs.
 
 Because our data was so imbalanced and had multiple categories, the model was generally better at predicting that an image is not in a category than accurately predicting an image's category. This is especially true for the 'compost' label, where precision is extremely poor.
 
-Still, the model accurately classified 75% of images. This is higher than both of the Random Forest classifiers. It does not appear to be overfitted - while training accuracy is slightly higher, there is not a large difference between the training and test accuracy, and we chose an epoch number before the training and validation accuracy dramatically separate.
+Still, the model accurately classified 75% of images. This is higher than both of the Random Forest classifiers. It does not appear to be overfitted - while training accuracy is slightly higher, there is not a large difference between the training, validation, and test accuracy, and we chose an epoch number before the training and validation accuracy dramatically separate.
 
 ## Conclusion
 This is where you do a mind dump on your opinions and possible future directions. Basically what you wish you could have done differently. Here you close with final thoughts.
