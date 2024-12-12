@@ -373,27 +373,36 @@ We had a large dataset of 15000 studio and real-world images divided into 30 cla
 
 This may have limited accuracy by removing useful information about the specific class of an image, forcing our model to accomodate by creating more complex decision boundaries. It may have been better to label images as 'recyclable', 'landfill', and 'waste' after first combining classes into several less high-level categories (eg.'cans') or simply not combine classes at all.
 
+Otherwise, though there were a uniform number of images in each original class, our dataset contained a significant and unanticipated class imbalance once we combined classes, with 'recyclable' being the dominant class. This may have affected model perfromance.
+
+Though the images were labeled 'studio' and 'real-world', most real-world images were clear pictures in a controlled environment. Some of these images had text. This is likely to harm generalizability of our models.
+
 We used min-max normalization because pixel values were not normally distributed.
 
 ### Model 1
 
-Our dataset was large and imbalanced, and we anticipated complex decision boundaries due to the wide range of objects in the same class. Given that Random Forest is suited for handling large and imbalanced datasets with complex decision bounderies we chose a Random Forest classifier to capture this behavior in different subtrees. Still, our dataset contained a class imbalance, with recycling being the dominant class, which may have affected model perfromance.
+Our dataset was large and imbalanced, and we anticipated complex decision boundaries due to the wide range of objects in the same class. Given that Random Forest is suited for handling large and imbalanced datasets with complex decision bounderies, we chose a Random Forest classifier to capture this behavior in different subtrees. 
 
-The extremely high training accuracy of our first model indicated that it was overfitted, so we decided to tune the 'n_estimators', 'max_depth', and 'min_samples_split' hyperparameters with a custom function. Since we prioritized addressing overfitting, we only considered models with a difference between training and validation accuracy of less than or equal to 0.1 to filter out overfit models and prioritize configurations with consistent performance across data splits.
+The high training accuracy of our first model indicated that it was overfitted, so we decided to tune the 'n_estimators', 'max_depth', and 'min_samples_split' hyperparameters with a custom function. Since we prioritized addressing overfitting, we only considered models with a difference between training and validation accuracy of less than or equal to 0.1 to filter out overfit models and prioritize configurations with consistent performance across data splits.
 
+We further preprocessed data for Model 1 by computing Histogram of Oriented Gradients features for input images to extract meaningful features from raw pixels and further refine model performance.
 
-We additionally further preprocessed data for Model 1 by computing Histogram of Oriented Gradients features for input images to extract meaningful features from raw pixels and further refine model performance.
+Unexpectedly, the Random Forest classifier without HOG feature extraction slightly outperformed the classifier with HOG feature extraction without showing signs of overfitting. It is possible that while the original Random Forest classifier did not overfit on this dataset, the classifier with HOG feature extraction is more generalizable to data outside of the dataset because it is less reliant on individual pixel values. This may also connect to the controlled and clear nature of the dataset images since individual pixels are more informative in a clearer picture of an object.
 
-Unexpectedly, the Random Forest classifier without HOG feature extraction slightly outperformed the classifier with HOG feature extraction without showing signs of overfitting. It is possible that while the original Random Forest classifier did not overfit on this dataset, the classifier with HOG feature extraction is more generalizable to data outside of the dataset.
+The precision was significantly higher than recall than precision for both 'compost' and 'landfill' but significantly higher precision than recall for 'recyclable'. This is almost certainly because most images were 'recyclable', encouraging the model to use this label.
 
 ### Model 2
-For our second model, we chose a convolutional neural network to better handle the aforementioned complex decision boundary and interpret many pixel values divorced from higher-level meaning. 
+For our second model, we chose a convolutional neural network to better handle the  complex decision boundary and interpret many pixel values divorced from higher-level meaning. 
 
 In addition to referencing the results of a grid search, we chose our final convolutional neural network hyperparameters specifically to maximize accuracy and address overfitting from previous models and excessive computational cost. We found a lower number of filters in the convolutional layers actually increased accuracy and reduced costs in model training time and resources. Similarly, dropout layers addressed overfitting, and feeding fewer inputs into the final dense layer reduced the complexity of the final decision. The training accuracy and loss quickly and dramatically separate from the validation accuracy and loss after 12 epochs, so we limited the fitting to 12 epochs.
 
-Because our data was so imbalanced and had multiple categories, the model was generally better at predicting that an image is not in a category than accurately predicting an image's category. This is especially true for the 'compost' label, where precision is extremely poor.
+The model accurately classified 75% of images. This is higher than both of the Random Forest classifiers. This is not unexpected because the convolutional neural network is more complex than the Random Forest classifier, and this is a complex problem.
 
-Still, the model accurately classified 75% of images. This is higher than both of the Random Forest classifiers. It does not appear to be overfitted - while training accuracy is slightly higher, there is not a large difference between the training, validation, and test accuracy, and we chose an epoch number before the training and validation accuracy dramatically separate.
+The model does not appear to be overfitted - while training accuracy is slightly higher, there is not a large difference between the training, validation, and test accuracy, and we chose an epoch number before the training and validation accuracy dramatically separate.
+
+Interestingly, the convolutional neural network had a much more balanced precision and recall for each category than the Random Forest classifier. The precision and recall between categories did not range as widely, and the precision within a category tended to be closer to the recall within that category. This was unexpected given the unbalanced data, but not implausible given the complexity of the model.
+
+Thought the accuracy was highest for the 'compost' category, this seems to have only been because there were so many negatives. The precision and recall indicate that the model is no better at predicting 'compost' than any other label. Unsurprisingly, 'recyclable', the largest category, had the highest precision and recall.
 
 ## Conclusion
 
