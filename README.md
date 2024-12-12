@@ -71,9 +71,11 @@ We applied min-max normalization to the pixel data of the images, scaling each p
 
 ### Model 1
 
-We used a **Random Forest** classifier for our first model to classify trash images. Our dataset contains a class imbalance, with recycling being the dominant class, which could potentially affect model performance. Given that Random Forest is suited for handling large and imbalanced datasets, we chose it as our initial model. The model was trained with basic parameters.
+We used a **Random Forest** classifier for our first model to classify trash images. The model was trained with basic parameters.
 
-Our initial version of the model had an accuracy of approximately 0.8037 on our test set, meaning it had an error of 0.1963. However, it had a training accuracy of 0.9996, indicating that the model was overfitting. To address this, we manually tuned three key hyperparameters:
+Our initial version of the model had an accuracy of approximately 0.8037 on our test set, meaning it had an error of 0.1963. However, it had a training accuracy of 0.9996, indicating that the model was overfitting. 
+
+We manually tuned three key hyperparameters:
 * `n_estimators`: Controls the number of trees in the forest. More trees can improve performance but increase training time. We tested values from 50 to 100 to find the best balance. 
 * `max_depth`: Limits how deep each tree grows. By default, max_depth=None allows trees to expand fully, often leading to the model overfitting. We experimented with depths of 5, 10, and 15 to constrain tree growth and observe the trade-off between model complexity and generalization.
 * `min_samples_split`: Specifies the minimum samples needed to split a node. The default value is 2, allowing fine splits that can lead to overfitting. We tested values of 2 and 5 to balance capturing meaningful patterns while reducing overfitting.
@@ -137,9 +139,9 @@ Next, we called this function using the training and validation datasets:
 ```
 res_df, best_params = tune_rf_hyperparameters(X_train_flat, y_train, X_valid_flat, y_valid)
 ```
-Using the resulting res_df, we calculated differences in accuracy across training and validation to assess model generalization. This helped us filter out overfit models and prioritize configurations with consistent performance across data splits. We computed `train_valid_diff`, the difference between training and validation accuracy for each row in the resulting dataframe. 
+Using the resulting res_df, we calculated differences in accuracy across training and validation to assess model generalization. We computed `train_valid_diff`, the difference between training and validation accuracy for each row in the resulting dataframe. 
 
-We applied a threshold of 0.1 to filter models that had a `train_valid_diff` of over 10% to remove models that overfitting and then sorted by validation accuracy to identify the best-performing configurations. Below is the code used:
+We applied a threshold of 0.1 and then sorted by validation accuracy to identify the best-performing configurations. Below is the code used:
 
 ```
 res_df['train_valid_diff'] = abs(res_df['train_acc'] - res_df['valid_acc'])
@@ -155,7 +157,7 @@ sorted_filtered_df
 ```
 
 #### Exploring HOG Features
-To further enhance model performance, we explored using Histogram of Oriented Gradients (HOG) features for image representation. These features were extracted from grayscale versions of the input images to capture edge and texture information. We trained a separate Random Forest classifier on these features, following a similar process for hyperparameter tuning as described earlier: 
+We also explored using Histogram of Oriented Gradients (HOG) features for image representation. These features were extracted from grayscale versions of the input images to capture edge and texture information. We trained a separate Random Forest classifier on these features, following a similar process for hyperparameter tuning as described earlier: 
 ```
 def extract_hog_features(images):
     hog_features = []
@@ -331,9 +333,12 @@ We used min-max normalization because pixel values were not normally distributed
 
 ### Model 1
 
-We anticipated the decision boundary would need to be complex to handle the wide range of objects in the same class, and our dataset was large and imbalanced, so we chose a Random Forest classifier to capture this behavior in different subtrees. TODO: I think some of the discussion of why we chose model 1 hyperparameters should go here
+Our dataset was large and imbalanced, and we anticipated complex decision boundaries due to the wide range of objects in the same class. Given that Random Forest is suited for handling large and imbalanced datasets with complex decision bounderies we chose a Random Forest classifier to capture this behavior in different subtrees. Still, our dataset contained a class imbalance, with recycling being the dominant class, which may have affected model perfromance.
 
-We additionally further preprocessed data for Model 1 by computer Histogram of Oriented Gradients features for input images to extract meaningful features from raw pixels.
+Becaues our first model was overfitted, we used tuned the 'n_estimators', 'max_depth', and 'min_samples_split' hyperparameters with a custom function. Since we prioritized addressing overfitting, we only considered models with a difference between training and validation accuracy of less than or equal to 0.1 to filter out overfit models and prioritize configurations with consistent performance across data splits.
+
+
+We additionally further preprocessed data for Model 1 by computing Histogram of Oriented Gradients features for input images to extract meaningful features from raw pixels and further refine model performance.
 
 Unexpectedly, the Random Forest classifier without HOG feature extraction slightly outperformed the classifier with HOG feature extraction without showing signs of overfitting. It is possible that while the original Random Forest classifier did not overfit on this dataset, the classifier with HOG feature extraction is more generalizable to data outside of the dataset.
 
