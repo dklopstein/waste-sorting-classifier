@@ -306,8 +306,15 @@ The final model trained with the HOG features had the following hyperparameters:
 Despite tuning the hyperparameters, the model with HOG features did not outperform the original feature-based model, which achieved a test accuracy of 0.6597 and a validation accuracy of 0.686.
    
 ### Model 2
+
 ![CNN Confusion Matrix](images/CNNConfusionMatrixAfterTuning.png)
-Our CNN accurately classified 75% of images into landfill, recyclable, or compost, with a loss of 0.733. 
+Our CNN accurately classified 75% of images into landfill, recyclable, or compost, with a loss of 0.733.
+The count of true positives, true negatives, false positives, and false negatives is given below:
+|     Label         |     TP     |     TN      |     FP     |     FN     |
+|-------------------|------------|-------------|------------|------------|
+|     compost       |     34     |     2386    |     223    |     357    |
+|     landfill      |     346    |     1366    |     653    |     635    |
+|     recyclable    |     975    |     603     |     769    |     653    |
 
 At 12 epochs (where we stopped the model to predict the test set), the training accuracy was about 0.83 while the validation accuracy was about 0.75. The training loss was about 0.4, and the validation loss was about 0.7.
 ![CNN Loss Graph](images/CNNLossGraphAfterTuning.png)
@@ -321,12 +328,24 @@ We had a large dataset of 15000 studio and real-world images divided into 30 cla
 
 This may have limited accuracy by removing useful information about the specific class of an image, forcing our model to accomodate by creating more complex decision boundaries. It may have been better process predications into 'recyclable', 'landfill', and 'waste' afterwards and combine classes into several less high-level categories such as 'cans' or simply not combine classes at all.
 
+We used min-max normalization because pixel values were not normally distributed.
+
 ### Model 1
 
-### Model 2
+We anticipated the decision boundary would need to be complex to handle the wide range of objects in the same class, and our dataset was large and imbalanced, so we chose a Random Forest classifier to capture this behavior in different subtrees. TODO: I think some of the discussion of why we chose model 1 hyperparameters should go here
 
-### Comparing Models
-idk if this should be a section, but it seems like maybe possibly useful
+We additionally further preprocessed data for Model 1 by computer Histogram of Oriented Gradients features for input images to extract meaningful features from raw pixels.
+
+Unexpectedly, the Random Forest classifier without HOG feature extraction slightly outperformed the classifier with HOG feature extraction without showing signs of overfitting. It is possible that while the original Random Forest classifier did not overfit on this dataset, the classifier with HOG feature extraction is more generalizable to data outside of the dataset.
+
+### Model 2
+For our second model, we chose a convolutional neural network to better handle the aforementioned complex decision boundary and interpret many pixel values divorced from higher-level meaning. 
+
+In addition to referencing the results of a grid search, we chose our final convolutional neural network hyperparameters specifically to maximize accuracy and address overfitting from previous models and excessive computational cost. We found a lower number of filters in the convolutional layers actually increased accuracy and reduced cost. Similarly, dropout layers addressed overfitting, and feeding fewer inputs into the final dense layer reduced the complexity of the final decision. The training accuracy and loss quickly and dramatically separate from the validation accuracy and loss after 12 epochs, so we limited the fitting to 12 epochs.
+
+Because our data was so imbalanced and had multiple categories, the model was generally better at predicting that an image is not in a category than accurately predicting an image's category. This is especially true for the 'compost' label, where precision is extremely poor.
+
+Still, the model accurately classified 75% of images. This is higher than both of the Random Forest classifiers. It does not appear to be overfitted - while training accuracy is slightly higher, there is not a large difference between the training and test accuracy, and we chose an epoch number before the training and validation accuracy dramatically separate.
 
 ## Conclusion
 
