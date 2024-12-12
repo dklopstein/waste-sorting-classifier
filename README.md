@@ -435,11 +435,12 @@ Title:
 Contribution: 
 
 
-Name: 
+Name:  Lillian Ho
 
 Title: 
 
-Contribution: 
+Contribution: Collaborated with group to help with initial data exploration/preprocessing, such as plotting sample images and normalizing pixel values with min-max scaling. Worked on implementing initial Random Forest classifier and hyperparameter tuning to address model overfitting. Generated various plots to compare different hyperparameters to model accuracies on validation/training sets and generated confusion matrices. Also explored potential ways to improve model performance, such as using HOG features. Helped write portions of the Model 1 subsections in the final report.
+
 
 Name: Serena Xie
 
