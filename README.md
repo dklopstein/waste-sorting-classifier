@@ -35,37 +35,37 @@ We classified waste items (the existing 30 waste categories) into these three ge
 - **Compost** - Items that can decompose and be used as compost.
 
 | old label | new label |
-|:------|:---------------|
-| `'aerosol_cans'` | recyclable |
-| `'aluminum_food_cans'` | recyclable |
-| `'aluminum_soda_cans'` | recyclable |
-| `'cardboard_boxes'` | recyclable |
-| `'cardboard_packaging'` | recyclable |
-| `'clothing'` | landfill |
-| `'coffee_grounds'` | compost |
-| `'disposable_plastic_cutlery'` | landfill |
-| `'eggshells'` | compost |
-| `'food_waste'` | compost |
-| `'glass_beverage_bottles'` | recyclable |
-| `'glass_cosmetic_containers'` | recyclable |
-| `'glass_food_jars'` | recyclable |
-| `'magazines'` | recyclable |
-| `'newspaper'` | recyclable |
-| `'office_paper'` | recyclable |
-| `'paper_cups'` | landfill |
-| `'plastic_cup_lids'` | landfill |
-| `'plastic_detergent_bottles'` | recyclable |
-| `'plastic_food_containers'` | recyclable |
-| `'plastic_shopping_bags'` | landfill |
-| `'plastic_soda_bottles'` | recyclable |
-| `'plastic_straws'` | recyclable |
-| `'plastic_trash_bags'` | landfill |
-| `'plastic_water_bottles'` | recyclable |
-| `'shoes'` | landfill |
-| `'steel_food_cans'` | recyclable |
-| `'styrofoam_cups'` | landfill |
-| `'styrofoam_food_containers'` | landfill |
-| `'tea_bags'` | compost |
+|:----------|:----------|
+| `'aerosol_cans'` | `'recyclable'` |
+| `'aluminum_food_cans'` | `'recyclable'` |
+| `'aluminum_soda_cans'` | `'recyclable'` |
+| `'cardboard_boxes'` | `'recyclable'` |
+| `'cardboard_packaging'` | `'recyclable'` |
+| `'clothing'` | `'landfill'` |
+| `'coffee_grounds'` | `'compost'` |
+| `'disposable_plastic_cutlery'` | `'landfill'` |
+| `'eggshells'` | `'compost'` |
+| `'food_waste'` | `'compost'` |
+| `'glass_beverage_bottles'` | `'recyclable'` |
+| `'glass_cosmetic_containers'` | `'recyclable'` |
+| `'glass_food_jars'` | `'recyclable'` |
+| `'magazines'` | `'recyclable'` |
+| `'newspaper'` | `'recyclable'` |
+| `'office_paper'` | `'recyclable'` |
+| `'paper_cups'` | `'landfill'` |
+| `'plastic_cup_lids'` | `'landfill'` |
+| `'plastic_detergent_bottles'` | `'recyclable'` |
+| `'plastic_food_containers'` | `'recyclable'` |
+| `'plastic_shopping_bags'` | `'landfill'` |
+| `'plastic_soda_bottles'` | `'recyclable'` |
+| `'plastic_straws'` | `'recyclable'` |
+| `'plastic_trash_bags'` | `'landfill'` |
+| `'plastic_water_bottles'` | `'recyclable'` |
+| `'shoes'` | `'landfill'` |
+| `'steel_food_cans'` | `'recyclable'` |
+| `'styrofoam_cups'` | `'landfill'` |
+| `'styrofoam_food_containers'` | `'landfill'` |
+| `'tea_bags'` | `'compost'` |
 
 **Table 1: Updated Labels.**
 <br><br>
