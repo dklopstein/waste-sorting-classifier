@@ -423,11 +423,11 @@ Unfortunately, the dataset itself was not representative of images of waste whic
 
 ## Statement of Collaboration
 
-Name: 
+Name: Arjun Kohli
 
-Title: 
+Title: Writer
 
-Contribution: 
+Contribution: Contributed to the foundational stages of the project with finding the datasets, writing the abstract, and then to writing the first milestone readme, helping compile information for the final project report, performing preprocessing on the data locally to make sure that the data is in order. Coordinated with everyone and ensured clear communication to make sure work assigned by the project lead was completed.
 
 Name: Derek Klopstein
 
