@@ -7,24 +7,26 @@ Effective waste management is essential to environmental health. Improper waste 
 
 ### Data Exploration
 
-The dataset has 15,000 pictures of waste classified as plastic, paper, cardboard, glass, metal, organic waste, and textiles intercepted already in a landfill environment. This will help the accuracy of our model since it is devoid of surrounding trash. The plots and results from data exploration can be seen below:
-
-- Number of classes: 30
-- Number of images: 15000
-- Unique image sizes: [(256, 256)]
-- Number of images per class: 500
-
-The distribution of image sizes showing that each image was 256 by 256 pixels:
+The dataset has a comprehensive collection of 15,000 images labeled as plastic, paper, cardboard, glass, metal, organic waste, and textiles. The goal of the data exploration was to verify the number of classes, image sizes, and the types of images.
 
 ![Image](./images/imagesize_distribution.png)
-
-The distribution to see the number of images per class:
+<br/>
+**Figure 1: Distrubution of Image Sizes.**
+We found that the dataset already standardized the image sizes to 256 by 256 pixels. This meant that we could skip resizing the images and focus on other transformations.
+<br><br>
 
 ![Image](./images/imagesperclass.png)
-
-A sample image from each class is below:
+<br/>
+**Figure 2: Distribution of the Number of Images per Class.**
+Among the classes already mentioned, there were more specific classes denoting material and the type of waste. For example, `plastic_cup_lids` and `paper_cups`.
+<br><br>
 
 ![Image](./images/sampleimageseachclass.png)
+<br/>
+**Figure 3: Sample Images from Each Class.**
+From this sample we realized that there were different kinds of images for each class. These were either `default` or `real_world` where default images were studio-like, without a background, and real world would be in realistic envorinments. For example, in this sample the `glass_beverage_bottles` class image has a beach-like background whereas the `styrofoam_cups` class is a single styrofoam cup with no background.
+<br>
+
 
 ### Preprocessing
 We classified waste items (the existing 30 waste categories) into these three general categories:
@@ -64,6 +66,9 @@ We classified waste items (the existing 30 waste categories) into these three ge
 | `'styrofoam_cups'` | landfill |
 | `'styrofoam_food_containers'` | landfill |
 | `'tea_bags'` | compost |
+
+**Table 1: Updated Labels.**
+<br><br>
 
 We split our dataset into 60:20:20 for our training, validation, and test set.
 
@@ -221,9 +226,13 @@ pandas_dfs = [train_df, val_df, test_df]
 train_batches, val_batches, test_batches = [to_gen(df) for df in pandas_dfs]
 ```
 
-We created a Sequential convolutional neural network model using keras. The model consisted of an input layer, a convolutional hidden layer with a 3 X 3 kernel size, 12 filters, and relu activation function, a max pooling layer, another convolutional hidden layer with a 3 X 3 kernel size, 24 filters, and relu acivation function, another max pooling layer, a dropout layer to deactivate 25% of input units, a layer to flatten data, a dense hidden layer with a relu activation function, a dropout layer to deactiveat 50% of input units, and a dense output layer with a softmax activation function:
 
-![Model Summary](images/CNNSummary.png)<br/>*Convolutional Neural Network Model Summary*<br><br>
+
+![Model Summary](images/CNNSummary.png)
+<br/>
+**Figure 4: Convolutional Neural Network Model.**
+We created a Sequential convolutional neural network model using keras. The model consisted of an input layer, a convolutional hidden layer with a 3 X 3 kernel size, 12 filters, and relu activation function, a max pooling layer, another convolutional hidden layer with a 3 X 3 kernel size, 24 filters, and relu acivation function, another max pooling layer, a dropout layer to deactivate 25% of input units, a layer to flatten data, a dense hidden layer with a relu activation function, a dropout layer to deactiveat 50% of input units, and a dense output layer with a softmax activation function:
+<br><br>
 
 We compiled using cross entropy loss and a learning rate of 0.001. Our final CNN was trained with 12 epochs and a batch size of 32.
 
@@ -295,11 +304,11 @@ print(f'Test Accuracy: {accuracy * 100:.2f}%')
 ### Model 1
 The final model had the following hyperparameters: `n_estimators`=90, `max_depth`=7, and `min_samples_split`=5. This configuration achieved a test accuracy of 0.6597, a validation accuracy of 0.686, and a training accuracy of 0.7524, demonstrating improved generalization.
 
-Below is a graph illustrating the relationship between different max_depth values and accuracy metrics, showing how deeper trees affected training and validation accuracies:
-
 ![Fitting Graph](images/rf_max_depth_accuracy_plot.png)
-
-#### Performance Comparison with Histogram of Oriented Gradients (HOG) Features
+<br/>
+**Figure 5: Performance Comparison with Histogram of Oriented Gradients (HOG) Features.**
+The relationship between different max_depth values and accuracy metrics, showing how deeper trees affected training and validation accuracies.
+ <br><br>
 The final model trained with the HOG features had the following hyperparameters: `n_estimators`=80, `max_depth`=7, `min_samples_split`=3. This model achieved a test accuracy of 0.6217, a validation accuracy of 0.6387, and a training accuracy of 0.7286.
   
 Despite tuning the hyperparameters, the model with HOG features did not outperform the original feature-based model, which achieved a test accuracy of 0.6597 and a validation accuracy of 0.686.
@@ -307,17 +316,34 @@ Despite tuning the hyperparameters, the model with HOG features did not outperfo
 ### Model 2
 
 ![CNN Confusion Matrix](images/CNNConfusionMatrixAfterTuning.png)
+<br/>
+**Figure 6: Confusion Matrix.** We can see how well Model 2 performed by comporing the true labels and predicted labels across all classes.
+<br><br>
+
 Our CNN accurately classified 75% of images into landfill, recyclable, or compost, with a loss of 0.733.
-The count of true positives, true negatives, false positives, and false negatives is given below:
+
 |     Label         |     TP     |     TN      |     FP     |     FN     |
 |-------------------|------------|-------------|------------|------------|
 |     compost       |     34     |     2386    |     223    |     357    |
 |     landfill      |     346    |     1366    |     653    |     635    |
 |     recyclable    |     975    |     603     |     769    |     653    |
 
-At 12 epochs (where we stopped the model to predict prevent overfitting on the test set), the training accuracy was about 0.83 while the validation accuracy was about 0.75. The training loss was about 0.4, and the validation loss was about 0.7. Below is a fitting graph comparing training and validation loss and accuracy accross a total of 20 epochs. 
+
+
+**Table 2: Count of True Positives, True Negatives, False Positives, and False Negatives.**
+<br><br>
+
 ![CNN Loss Graph](images/CNNLossGraphAfterTuning.png)
+<br/>
+**Figure 7: Training and Validation Loss.**
+At 12 epochs (where we stopped the model to predict prevent overfitting on the test set), the training loss was about 0.4, and the validation loss was about 0.7.
+<br><br>
+
 ![CNN Accuracy Graph](images/CNNAccuracyGraphAfterTuning.png)
+<br/>
+**Figure 8: Training and Validation Accuracy.** 
+At 12 epochs the training accuracy was about 0.83 while the validation accuracy was about 0.75.
+<br><br>
 
 ## Discussion
 This is where you will discuss the why, and your interpretation and your though process from beginning to end. This will mimic the sections you have created in your methods section as well as new sections you feel you need to create. You can also discuss how believable your results are at each step. You can discuss any short comings. It's ok to criticize as this shows your intellectual merit, as to how you are thinking about things scientifically and how you are able to correctly scrutinize things and find short comings. In science we never really find the perfect solution, especially since we know something will probably come up int he future (i.e. donkeys) and mess everything up. If you do it's probably a unicorn or the data and model you chose are just perfect for each other!
