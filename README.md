@@ -12,7 +12,7 @@ The dataset has a comprehensive collection of 15,000 images labeled as plastic, 
 ![Image](./images/imagesize_distribution.png)
 <br/>
 **Figure 1: Distrubution of Image Sizes.**
-We found that the dataset already standardized the image sizes to 256 by 256 pixels. This meant that we could skip resizing the images and focus on other transformations.
+The images in the dataset were already standardized to 256 by 256 pixels each.
 <br><br>
 
 ![Image](./images/imagesperclass.png)
@@ -24,7 +24,7 @@ Among the classes already mentioned, there were more specific classes denoting m
 ![Image](./images/sampleimageseachclass.png)
 <br/>
 **Figure 3: Sample Images from Each Class.**
-From this sample we realized that there were different kinds of images for each class. These were either `default` or `real_world` where default images were studio-like, without a background, and real world would be in realistic envorinments. For example, in this sample the `glass_beverage_bottles` class image has a beach-like background whereas the `styrofoam_cups` class is a single styrofoam cup with no background.
+From this sample there were different kinds of images for each class. These were either `default` or `real_world` where default images were studio-like, without a background, and real world would be in realistic envorinments. For example, in this sample the `glass_beverage_bottles` class image has a beach-like background whereas the `styrofoam_cups` class is a single styrofoam cup with no background.
 <br>
 
 
@@ -76,11 +76,9 @@ We applied min-max normalization to the pixel data of the images, scaling each p
 
 ### Model 1
 
-We used a **Random Forest** classifier for our first model to classify trash images. The model was trained with basic parameters.
+We used a **Random Forest** classifier for our first model to classify trash images. The full code is [here](./Random_Forest.ipynb) The model was trained with basic parameters.
 
-Our initial version of the model had an accuracy of approximately 0.8037 on our test set, meaning it had an error of 0.1963. However, it had a training accuracy of 0.9996, indicating that the model was overfitting. 
-
-We manually tuned three key hyperparameters:
+Afterwards, we manually tuned three key hyperparameters:
 * `n_estimators`: Controls the number of trees in the forest. More trees can improve performance but increase training time. We tested values from 50 to 100 to find the best balance. 
 * `max_depth`: Limits how deep each tree grows. By default, max_depth=None allows trees to expand fully, often leading to the model overfitting. We experimented with depths of 5, 10, and 15 to constrain tree growth and observe the trade-off between model complexity and generalization.
 * `min_samples_split`: Specifies the minimum samples needed to split a node. The default value is 2, allowing fine splits that can lead to overfitting. We tested values of 2 and 5 to balance capturing meaningful patterns while reducing overfitting.
@@ -233,7 +231,7 @@ train_batches, val_batches, test_batches = [to_gen(df) for df in pandas_dfs]
 ![Model Summary](images/CNNSummary.png)
 <br/>
 **Figure 4: Convolutional Neural Network Model.**
-We created a Sequential convolutional neural network model using keras. The model consisted of an input layer, a convolutional hidden layer with a 3 X 3 kernel size, 12 filters, and relu activation function, a max pooling layer, another convolutional hidden layer with a 3 X 3 kernel size, 24 filters, and relu acivation function, another max pooling layer, a dropout layer to deactivate 25% of input units, a layer to flatten data, a dense hidden layer with a relu activation function, a dropout layer to deactiveat 50% of input units, and a dense output layer with a softmax activation function:
+We created a Sequential convolutional neural network model using keras. The model consisted of an input layer, a convolutional hidden layer with a 3 X 3 kernel size, 12 filters, and relu activation function, a max pooling layer, another convolutional hidden layer with a 3 X 3 kernel size, 24 filters, and relu acivation function, another max pooling layer, a dropout layer to deactivate 25% of input units, a layer to flatten data, a dense hidden layer with a relu activation function, a dropout layer to deactivate 50% of input units, and a dense output layer with a softmax activation function:
 <br><br>
 
 We compiled using cross entropy loss and a learning rate of 0.001. Our final CNN was trained with 12 epochs and a batch size of 32.
@@ -249,7 +247,7 @@ history = model.fit(x=train_batches,
 )
 ```
 
-To better evaluate the the model fit, we plotted the training loss and validation loss at each epoch using the history of the fitted model. 
+We plotted the training loss and validation loss at each epoch using the history of the fitted model. 
 ```
 train_loss = history.history['loss']
 val_loss = history.history['val_loss']
@@ -259,7 +257,7 @@ We used the fitted model to predict the test set.
 predictions = model.predict(x=test_batches, steps=len(test_batches), verbose=0)
 ```
 
-To understand the predictions on the test set, we plotted the confusion matrix and printed the loss and accuracy across categories.
+We plotted the confusion matrix and printed the loss and accuracy across categories.
 
 ```
 cm = confusion_matrix(y_true=test_batches.classes, y_pred=np.argmax(predictions, axis=-1))
@@ -304,6 +302,9 @@ print(f'Test Accuracy: {accuracy * 100:.2f}%')
 ## Results
 
 ### Model 1
+
+Our initial version of the model had an accuracy of approximately 0.8037 on our test set, meaning it had an error of 0.1963. However, it had a training accuracy of 0.9996, indicating that the model was overfitting. 
+
 The final model had the following hyperparameters: `n_estimators`=90, `max_depth`=7, and `min_samples_split`=5. This configuration achieved a test accuracy of 0.6597, a validation accuracy of 0.686, and a training accuracy of 0.7524, demonstrating improved generalization.
 
 ![Fitting Graph](images/rf_max_depth_accuracy_plot.png)
@@ -412,19 +413,30 @@ Name:
 Title: 
 Contribution: 
 
-Name: 
-Title: 
-Contribution: 
 
 Name: 
+
 Title: 
+
+Contribution: 
+
+
+Name: 
+
+Title: 
+
 Contribution: 
 
 Name: Serena Xie
+
 Title: 
+
 Contribution: Initial fitting graph for Random Forest, function for recategorizing data into 3 classes (recyclable, landfill, compost), CNN preprocessing + model generation + train-validation testing + tuning + fitting graph + confusion matrix (all of CNN.ipynb) thanks to ample supercomputer access.
 
+
 Name: Arthur Utecht
+
 Title: 
+
 Contribution: Collaborated with group to choose goal and dataset. Collaborated with group to write abstract. Plotted data distribution and wrote (unused) function to split classes. Tried implementing HOG feature extraction and CNN (threw errors, so not the code used in notebooks). Helped write Methods, Results, and Discusssion section of README. Actively discussed errors and decisions with groupmates. Analyzed results and wrote Milestone 4 README.
 
