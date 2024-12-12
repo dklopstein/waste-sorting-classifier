@@ -225,7 +225,7 @@ We created a Sequential convolutional neural network model using keras. The mode
 
 ![Model Summary](images/CNNSummary.png)<br/>*Convolutional Neural Network Model Summary*<br><br>
 
-We compiled using cross entropy loss and a learning rate of 0.001. We trained the model with 12 epochs and a batch size of 1.
+We compiled using cross entropy loss and a learning rate of 0.001. Our final CNN was trained with 12 epochs and a batch size of 32.
 
 ```
 model.compile(optimizer=Adam(learning_rate=0.001), loss='categorical_crossentropy', metrics=['accuracy'])
