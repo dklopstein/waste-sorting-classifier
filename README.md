@@ -197,7 +197,7 @@ sorted_filtered_hog_df
 ### Model 2
 Our second model was a convolutional neural network. The full code can be found [here](./CNN.ipynb).
 
-We converted the split pandas datasets into a categorical tensorflow dataset of rgb images separated into batch sizes of 32: 
+We converted the split pandas datasets into image generators separated into batch sizes of 32: 
 ```
 def to_gen(df, shuffle=True):
     """
@@ -205,9 +205,8 @@ def to_gen(df, shuffle=True):
     ARGS:
         df: pandas df
     RETURNS 
-        gen: tensorflow dataset
+        gen: image generator for classification
     """
-    #preprocess = tf.keras.applications.vgg16.preprocess_input # preprocessing function for CNN
     rescale=1./255
     target_size=(224,224) # set the size of the images
     color_mode='rgb' # set the type of image
