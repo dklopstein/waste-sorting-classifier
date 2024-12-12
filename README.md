@@ -424,15 +424,16 @@ Unfortunately, the dataset itself was not representative of images of waste whic
 ## Statement of Collaboration
 
 Name: 
-Title: 
-Contribution: 
-
-
-Name: 
 
 Title: 
 
 Contribution: 
+
+Name: Derek Klopstein
+
+Title: Writer
+
+Contribution: Actively contributed to the foundational stages of project development by collaborating with the group to find the dataset and write the abstract. Authored the Introduction section, ensuring it provided a strong contextual framework for the project. Created and implemented detailed figure legends and updated code blocks to enhance clarity and visual impact. Coordinated with team members to make minor changes to the write-up, ensuring proper communication and feedback during each milestone.
 
 
 Name:  Lillian Ho
@@ -444,7 +445,7 @@ Contribution: Collaborated with group to help with initial data exploration/prep
 
 Name: Serena Xie
 
-Title: 
+Title: Project Lead and Coder
 
 Contribution: Initial fitting graph for Random Forest, function for recategorizing data into 3 classes (recyclable, landfill, compost), CNN preprocessing + model generation + train-validation testing + tuning + fitting graph + confusion matrix (all of CNN.ipynb) thanks to ample supercomputer access.
 
