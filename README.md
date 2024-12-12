@@ -308,18 +308,35 @@ The final model had the following hyperparameters: `n_estimators`=90, `max_depth
 
 ![Fitting Graph](images/rf_max_depth_accuracy_plot.png)
 <br/>
-**Figure 5: Performance Comparison with Histogram of Oriented Gradients (HOG) Features.**
+**Figure 5: Tuning Max Depth.**
 The relationship between different max_depth values and accuracy metrics, showing how deeper trees affected training and validation accuracies.
  <br><br>
-The final model trained with the HOG features had the following hyperparameters: `n_estimators`=80, `max_depth`=7, `min_samples_split`=3. This model achieved a test accuracy of 0.6217, a validation accuracy of 0.6387, and a training accuracy of 0.7286.
-  
-Despite tuning the hyperparameters, the model with HOG features did not outperform the original feature-based model, which achieved a test accuracy of 0.6597 and a validation accuracy of 0.686.
+
+![RF Confusion](images/rf_confusion_matrix.png)
+<br/>
+**Figure 6: Random Forest Confusion Matrix.** Based on the confusion matrix generated from the random forest model we can calculate the precision and recall from each class.
+<br><br>
+
+Then for each class our precision and recall are roughly .8355 and .3215 for compost, .84 and .3526 for landfill, and .6147 and .9615 for recyclable.
+
+
+The model trained with the HOG features had the following hyperparameters: `n_estimators`=80, `max_depth`=7, `min_samples_split`=3. This model achieved a test accuracy of 0.6217, a validation accuracy of 0.6387, and a training accuracy of 0.7286.
+
+![RF HOG Confusion](images/rf_hog_confusion_matrix.png)
+<br/>
+**Figure 7: Random Forest Confusion Matrix with HOG Features.** Based on the confusion matrix generated from the random forest model we can calculate the precision and recall from each class.
+<br><br>
+
+
+Then for each class our precision and recall are roughly .9091 and .1266 for compost, .8883 and .2892 for landfill, and .5797 and .9817 for recyclable. 
+
+Despite tuning the hyperparameters, the model with HOG features did not outperform the original feature-based model.
    
 ### Model 2
 
 ![CNN Confusion Matrix](images/CNNConfusionMatrixAfterTuning.png)
 <br/>
-**Figure 6: Confusion Matrix.** We can see how well Model 2 performed by comporing the true labels and predicted labels across all classes.
+**Figure 8: Confusion Matrix.** We can see how well Model 2 performed by comporing the true labels and predicted labels across all classes.
 <br><br>
 
 Our CNN accurately classified 75% of images into landfill, recyclable, or compost, with a loss of 0.733.
@@ -337,13 +354,13 @@ Our CNN accurately classified 75% of images into landfill, recyclable, or compos
 
 ![CNN Loss Graph](images/CNNLossGraphAfterTuning.png)
 <br/>
-**Figure 7: Training and Validation Loss.**
+**Figure 9: Training and Validation Loss.**
 At 12 epochs (where we stopped the model to predict prevent overfitting on the test set), the training loss was about 0.4, and the validation loss was about 0.7.
 <br><br>
 
 ![CNN Accuracy Graph](images/CNNAccuracyGraphAfterTuning.png)
 <br/>
-**Figure 8: Training and Validation Accuracy.** 
+**Figure 10: Training and Validation Accuracy.** 
 At 12 epochs the training accuracy was about 0.83 while the validation accuracy was about 0.75.
 <br><br>
 
