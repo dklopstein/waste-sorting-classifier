@@ -341,11 +341,11 @@ Despite tuning the hyperparameters, the model with HOG features did not outperfo
 
 Our CNN accurately classified 75% of images into landfill, recyclable, or compost, with a loss of 0.733.
 
-|     Label         |     TP     |     TN      |     FP     |     FN     |
-|-------------------|------------|-------------|------------|------------|
-|     compost       |     34     |     2386    |     223    |     357    |
-|     landfill      |     346    |     1366    |     653    |     635    |
-|     recyclable    |     975    |     603     |     769    |     653    |
+| Label      | TP       | TN       | FP     | FN     | Precision    | Recall       | Accuracy     |
+|------------|----------|----------|--------|--------|--------------|--------------|--------------|
+| compost    |   277.00 | 2,504.00 | 105.00 | 114.00 | 0.7251308901 | 0.7084398977 | 0.927        |
+| landfill   |   644.00 | 1,825.00 | 194.00 | 337.00 | 0.76849642   | 0.6564729867 | 0.823        |
+| recyclable | 1,399.00 |   991.00 | 381.00 | 229.00 | 0.7859550562 | 0.8593366093 | 0.7966666667 |
 
 
 
