@@ -34,7 +34,7 @@ We classified waste items (the existing 30 waste categories) into these three ge
 - **Recyclable** - Items that can be recycled, such as plastics, metals, glass, and paper products.
 - **Compost** - Items that can decompose and be used as compost.
 
-| label | category/class |
+| old label | new label |
 |:------|:---------------|
 | `'aerosol_cans'` | recyclable |
 | `'aluminum_food_cans'` | recyclable |
@@ -84,7 +84,7 @@ Afterwards, we manually tuned three key hyperparameters:
 * `min_samples_split`: Specifies the minimum samples needed to split a node. The default value is 2, allowing fine splits that can lead to overfitting. We tested values of 2, 3, 5, 7, and 10 to balance capturing meaningful patterns while reducing overfitting.
 
 To tune these hyperparameters, we implemented a custom function, `tune_rf_hyperparameters`, which returned a DataFrame containing accuracy metrics for the training and validation sets, as well as the best-performing hyperparameter set. Below is the code for the function:
-```
+```python
 def tune_rf_hyperparameters(X_train_flat, y_train, X_valid_flat, y_valid):
     param_grid = {
         'n_estimators': [50, 60, 70, 80, 90, 100],
@@ -139,14 +139,14 @@ def tune_rf_hyperparameters(X_train_flat, y_train, X_valid_flat, y_valid):
     return df, best_params
 ```
 Next, we called this function using the training and validation datasets:
-```
+```python
 res_df, best_params = tune_rf_hyperparameters(X_train_flat, y_train, X_valid_flat, y_valid)
 ```
 Using the resulting res_df, we calculated differences in accuracy across training and validation to assess model generalization. We computed `train_valid_diff`, the difference between training and validation accuracy for each row in the resulting dataframe. 
 
 We applied a threshold of 0.1 and then sorted by validation accuracy to identify the best-performing configurations. Below is the code used:
 
-```
+```python
 res_df['train_valid_diff'] = abs(res_df['train_acc'] - res_df['valid_acc'])
 threshold = 0.1
 
@@ -161,7 +161,7 @@ sorted_filtered_df
 This resulted in the following hyperparameters: `n_estimators`=90, `max_depth`=7, and `min_samples_split`=5.
 #### Exploring HOG Features
 We also explored using Histogram of Oriented Gradients (HOG) features for image representation. These features were extracted from grayscale versions of the input images to capture edge and texture information. We trained a separate Random Forest classifier on these features, following a similar process for hyperparameter tuning as described earlier: 
-```
+```python
 def extract_hog_features(images):
     hog_features = []
     for image in images:
@@ -184,7 +184,7 @@ X_test_hog = extract_hog_features(X_test_normalized)
 ```
 
 The same custom function, `tune_rf_hyperparameters`, was used to address the overfitting with HOG features being used. Then, the same filtering was done to find the best-performing hyperparameter set: 
-```
+```python
 # Tune hyperparameters to address overfitting
 hog_res_df, best_hog_params = tune_rf_hyperparameters(X_train_hog, y_train, X_valid_hog, y_valid)
 
@@ -203,7 +203,7 @@ This resulted in the following hyperparameters: `n_estimators`=80, `max_depth`=7
 Our second model was a convolutional neural network. The full code can be found [here](./CNN.ipynb).
 
 We converted the split pandas datasets into image generators separated into batch sizes of 32: 
-```
+```python
 def to_gen(df, shuffle=True):
     """
     Convert pandas df to tensorflow image generator.
@@ -236,7 +236,7 @@ We created a Sequential convolutional neural network model using keras. The mode
 
 We compiled using cross entropy loss and a learning rate of 0.001. Our final CNN was trained with 12 epochs and a batch size of 32.
 
-```
+```python
 model.compile(optimizer=Adam(learning_rate=0.001), loss='categorical_crossentropy', metrics=['accuracy'])
 history = model.fit(x=train_batches,
     steps_per_epoch=len(train_batches),
@@ -248,18 +248,18 @@ history = model.fit(x=train_batches,
 ```
 
 We plotted the training loss and validation loss at each epoch using the history of the fitted model. 
-```
+```python
 train_loss = history.history['loss']
 val_loss = history.history['val_loss']
 ```
 We used the fitted model to predict the test set.
-```
+```python
 predictions = model.predict(x=test_batches, steps=len(test_batches), verbose=0)
 ```
 
 We plotted the confusion matrix and printed the loss and accuracy across categories.
 
-```
+```python
 cm = confusion_matrix(y_true=test_batches.classes, y_pred=np.argmax(predictions, axis=-1))
 # CODE COPIED FROM SCI-KIT LEARN
 def plot_confusion_matrix(cm, classes, normalize=False, title='Confusion matrix', cmap=plt.cm.Blues):
