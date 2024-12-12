@@ -378,9 +378,8 @@ Because our data was so imbalanced and had multiple categories, the model was ge
 Still, the model accurately classified 75% of images. This is higher than both of the Random Forest classifiers. It does not appear to be overfitted - while training accuracy is slightly higher, there is not a large difference between the training, validation, and test accuracy, and we chose an epoch number before the training and validation accuracy dramatically separate.
 
 ## Conclusion
-This is where you do a mind dump on your opinions and possible future directions. Basically what you wish you could have done differently. Here you close with final thoughts.
 
-Overall, the models classified images into the categories 'compost', 'landfill', and 'recyclable' with acceptable accuracy. With the current accuracy, the models could not be used independently to classify waste. However, they may be applicable in alerting consumers that waste should likely be disposed of in another bin. This would reduce mistakes and encourage consumers to think more about properly disposing of waste.
+Overall, the models classified images into the categories 'compost', 'landfill', and 'recyclable' with acceptable accuracy. With the current accuracy, the models could not be used independently to classify waste. However, they may be applicable in alerting consumers that waste should likely be disposed of in another bin. This would reduce mistakes and encourage consumers to think more about properly disposing of waste. Though the Random Forest classifier was not as accurate as the CNN, it may be better suited to this task due to lower computational costs.
 
 In the future, model accuracy may be improved by altering data preprocessing. Given the disparate items in the same category, it would be worthwhile to train models to identify the original 30 classes in the dataset. This may generalize less well to objects which do not fall into one of these classes, but it will preserve useful high-level information during training and may demand a less complex model.
 
@@ -392,4 +391,24 @@ Finally, given the large dataset, we might train our models with a certain subse
 
 ## Statement of Collaboration
 
+Name: 
+Title: 
+Contribution: 
+
+Name: 
+Title: 
+Contribution: 
+
+Name: 
+Title: 
+Contribution: 
+
+Name: 
+Title: 
+Contribution: 
+
+
+Name: Arthur Utecht
+Title: 
+Contribution: Collaborated with group to choose goal and dataset. Collaborated with group to write abstract. Plotted data distribution and wrote (unused) function to split classes. Tried implementing HOG feature extraction and CNN (threw errors, so not the code used in notebooks). Helped write Methods, Results, and Discusssion section of README. Actively discussed errors and decisions with groupmates. Analyzed results and wrote Milestone 4 README.
 
