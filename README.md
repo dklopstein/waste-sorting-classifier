@@ -7,24 +7,26 @@ Effective waste management is essential to environmental health. Improper waste 
 
 ### Data Exploration
 
-The dataset has 15,000 pictures of waste classified as plastic, paper, cardboard, glass, metal, organic waste, and textiles intercepted already in a landfill environment. This will help the accuracy of our model since it is devoid of surrounding trash. The plots and results from data exploration can be seen below:
-
-- Number of classes: 30
-- Number of images: 15000
-- Unique image sizes: [(256, 256)]
-- Number of images per class: 500
-
-The distribution of image sizes showing that each image was 256 by 256 pixels:
+The dataset has a comprehensive collection of 15,000 images labeled as plastic, paper, cardboard, glass, metal, organic waste, and textiles. The goal of the data exploration was to verify the number of classes, image sizes, and the types of images.
 
 ![Image](./images/imagesize_distribution.png)
-
-The distribution to see the number of images per class:
+<br/>
+**Figure 1: Distrubution of Image Sizes.**
+We found that the dataset already standardized the image sizes to 256 by 256 pixels. This meant that we could skip resizing the images and focus on other transformations.
+<br><br>
 
 ![Image](./images/imagesperclass.png)
-
-A sample image from each class is below:
+<br/>
+**Figure 2: Distribution of the Number of Images per Class.**
+Among the classes already mentioned, there were more specific classes denoting material and the type of waste. For example, `plastic_cup_lids` and `paper_cups`.
+<br><br>
 
 ![Image](./images/sampleimageseachclass.png)
+<br/>
+**Figure 3: Sample Images from Each Class.**
+From this sample we realized that there were different kinds of images for each class. These were either `default` or `real_world` where default images were studio-like, without a background, and real world would be in realistic envorinments. For example, in this sample the `glass_beverage_bottles` class image has a beach-like background whereas the `styrofoam_cups` class is a single styrofoam cup with no background.
+<br>
+
 
 ### Preprocessing
 We classified waste items (the existing 30 waste categories) into these three general categories:
@@ -65,15 +67,20 @@ We classified waste items (the existing 30 waste categories) into these three ge
 | `'styrofoam_food_containers'` | landfill |
 | `'tea_bags'` | compost |
 
+**Table 1: Updated Labels.**
+<br><br>
+
 We split our dataset into 60:20:20 for our training, validation, and test set.
 
 We applied min-max normalization to the pixel data of the images, scaling each pixel value to be within the 0 to 1 range.
 
 ### Model 1
 
-We used a **Random Forest** classifier for our first model to classify trash images. Our dataset contains a class imbalance, with recycling being the dominant class, which could potentially affect model performance. Given that Random Forest is suited for handling large and imbalanced datasets, we chose it as our initial model. The model was trained with basic parameters.
+We used a **Random Forest** classifier for our first model to classify trash images. The model was trained with basic parameters.
 
-Our initial version of the model had an accuracy of approximately 0.8037 on our test set, meaning it had an error of 0.1963. However, it had a training accuracy of 0.9996, indicating that the model was overfitting. To address this, we manually tuned three key hyperparameters:
+Our initial version of the model had an accuracy of approximately 0.8037 on our test set, meaning it had an error of 0.1963. However, it had a training accuracy of 0.9996, indicating that the model was overfitting. 
+
+We manually tuned three key hyperparameters:
 * `n_estimators`: Controls the number of trees in the forest. More trees can improve performance but increase training time. We tested values from 50 to 100 to find the best balance. 
 * `max_depth`: Limits how deep each tree grows. By default, max_depth=None allows trees to expand fully, often leading to the model overfitting. We experimented with depths of 5, 10, and 15 to constrain tree growth and observe the trade-off between model complexity and generalization.
 * `min_samples_split`: Specifies the minimum samples needed to split a node. The default value is 2, allowing fine splits that can lead to overfitting. We tested values of 2 and 5 to balance capturing meaningful patterns while reducing overfitting.
@@ -137,9 +144,9 @@ Next, we called this function using the training and validation datasets:
 ```
 res_df, best_params = tune_rf_hyperparameters(X_train_flat, y_train, X_valid_flat, y_valid)
 ```
-Using the resulting res_df, we calculated differences in accuracy across training and validation to assess model generalization. This helped us filter out overfit models and prioritize configurations with consistent performance across data splits. We computed `train_valid_diff`, the difference between training and validation accuracy for each row in the resulting dataframe. 
+Using the resulting res_df, we calculated differences in accuracy across training and validation to assess model generalization. We computed `train_valid_diff`, the difference between training and validation accuracy for each row in the resulting dataframe. 
 
-We applied a threshold of 0.1 to filter models that had a `train_valid_diff` of over 10% to remove models that overfitting and then sorted by validation accuracy to identify the best-performing configurations. Below is the code used:
+We applied a threshold of 0.1 and then sorted by validation accuracy to identify the best-performing configurations. Below is the code used:
 
 ```
 res_df['train_valid_diff'] = abs(res_df['train_acc'] - res_df['valid_acc'])
@@ -155,7 +162,7 @@ sorted_filtered_df
 ```
 
 #### Exploring HOG Features
-To further enhance model performance, we explored using Histogram of Oriented Gradients (HOG) features for image representation. These features were extracted from grayscale versions of the input images to capture edge and texture information. We trained a separate Random Forest classifier on these features, following a similar process for hyperparameter tuning as described earlier: 
+We also explored using Histogram of Oriented Gradients (HOG) features for image representation. These features were extracted from grayscale versions of the input images to capture edge and texture information. We trained a separate Random Forest classifier on these features, following a similar process for hyperparameter tuning as described earlier: 
 ```
 def extract_hog_features(images):
     hog_features = []
@@ -176,45 +183,60 @@ def extract_hog_features(images):
 X_train_hog = extract_hog_features(X_train_normalized)
 X_valid_hog= extract_hog_features(X_valid_normalized)
 X_test_hog = extract_hog_features(X_test_normalized)
+```
 
+The same custom function, `tune_rf_hyperparameters`, was used to address the overfitting with HOG features being used. Then, the same filtering was done to find the best-performing hyperparameter set: 
+```
 # Tune hyperparameters to address overfitting
 hog_res_df, best_hog_params = tune_rf_hyperparameters(X_train_hog, y_train, X_valid_hog, y_valid)
-```
 
+hog_res_df['train_valid_diff'] = abs(hog_res_df['train_acc'] - hog_res_df['valid_acc'])
+threshold = 0.1
+
+# Filter models that have low differences between training and validation accuracy
+filtered_hog_df = hog_res_df[(hog_res_df['train_valid_diff'] <= threshold)]
+
+# Sort by validation accuracy
+sorted_filtered_hog_df = filtered_hog_df.sort_values(by='valid_acc', ascending=False)
+sorted_filtered_hog_df
+```
 
 ### Model 2
-Our second model was a convolutional neural network. The full code can be found [here](./CNN_supercomputer.ipynb).
+Our second model was a convolutional neural network. The full code can be found [here](./CNN.ipynb).
 
-We converted the split pandas datasets into a tensorflow dataset of rgb images: 
+We converted the split pandas datasets into image generators separated into batch sizes of 32: 
 ```
-def to_tensorflow(df, shuffle=True):
+def to_gen(df, shuffle=True):
     """
-   Convert pandas df to tensorflow dataset.
+    Convert pandas df to tensorflow image generator.
     ARGS:
         df: pandas df
     RETURNS 
-        gen: tensorflow dataset
+        gen: image generator for classification
     """
-    preprocess = tf.keras.applications.vgg16.preprocess_input # preprocessing function for CNN 
+    rescale=1./255
     target_size=(224,224) # set the size of the images
     color_mode='rgb' # set the type of image
     class_mode= 'categorical' # set the class mode
     batch_size=32  # set the batch size 
-    gen=ImageDataGenerator(preprocessing_function=preprocess).flow_from_dataframe(df, 
+    gen=ImageDataGenerator(rescale=rescale).flow_from_dataframe(df, 
           x_col='image_path',
           y_col='category', target_size=target_size, color_mode=color_mode,
           class_mode=class_mode, batch_size=batch_size, shuffle=shuffle)
     return gen
-pandas_dfs = [train_df, val_df]
-train_batches, val_batches = [to_tensorflow(df) for df in pandas_dfs]
-test_batches = to_tensorflow(test_df, shuffle=False) # don't shuffle test batch
+pandas_dfs = [train_df, val_df, test_df]
+train_batches, val_batches, test_batches = [to_gen(df) for df in pandas_dfs]
 ```
 
-We created a Sequential convolutional neural network model using keras. We used 2 convolutional hidden layers with a 3 X 3 kernel size and relu activation function, max pooling, and a Dense output layer with a softmax activation function:
 
-![Model Summary](https://github.com/user-attachments/assets/027359d3-c358-4de7-9aa3-2dc40ca43ed2) <br/>*Convolutional Neural Network Model Summary*<br><br>
 
-We compiled using cross entropy loss and a learning rate of 0.001. We trained the model with 20 epochs and a batch size of 1.
+![Model Summary](images/CNNSummary.png)
+<br/>
+**Figure 4: Convolutional Neural Network Model.**
+We created a Sequential convolutional neural network model using keras. The model consisted of an input layer, a convolutional hidden layer with a 3 X 3 kernel size, 12 filters, and relu activation function, a max pooling layer, another convolutional hidden layer with a 3 X 3 kernel size, 24 filters, and relu acivation function, another max pooling layer, a dropout layer to deactivate 25% of input units, a layer to flatten data, a dense hidden layer with a relu activation function, a dropout layer to deactiveat 50% of input units, and a dense output layer with a softmax activation function:
+<br><br>
+
+We compiled using cross entropy loss and a learning rate of 0.001. Our final CNN was trained with 12 epochs and a batch size of 32.
 
 ```
 model.compile(optimizer=Adam(learning_rate=0.001), loss='categorical_crossentropy', metrics=['accuracy'])
@@ -222,10 +244,8 @@ history = model.fit(x=train_batches,
     steps_per_epoch=len(train_batches),
     validation_data=val_batches,
     validation_steps=len(val_batches),
-    epochs=20,
-    verbose=2,
-    workers=-1,
-    use_multiprocessing=True,
+    epochs=12,
+    verbose=1,
 )
 ```
 
@@ -279,30 +299,133 @@ loss, accuracy = model.evaluate(test_batches, verbose=1)
 print(f'Test Loss: {loss}')
 print(f'Test Accuracy: {accuracy * 100:.2f}%')
 ```
-#### 
 
-### Model 3
 
 ## Results
 
 ### Model 1
-The final model had the following hyperparameters: n_estimators=90, max_depth=7, and min_samples_split=5. This configuration achieved a test accuracy of 0.6597, a validation accuracy of 0.686, and a training accuracy of 0.7524, demonstrating improved generalization.
-
-Below is a graph illustrating the relationship between different max_depth values and accuracy metrics, showing how deeper trees affected training and validation accuracies:
+The final model had the following hyperparameters: `n_estimators`=90, `max_depth`=7, and `min_samples_split`=5. This configuration achieved a test accuracy of 0.6597, a validation accuracy of 0.686, and a training accuracy of 0.7524, demonstrating improved generalization.
 
 ![Fitting Graph](images/rf_max_depth_accuracy_plot.png)
+<br/>
+**Figure 5: Tuning Max Depth.**
+The relationship between different max_depth values and accuracy metrics, showing how deeper trees affected training and validation accuracies.
+ <br><br>
 
-#### Performance Comparison with HOG Features
-To evaluate the potential of Histogram of Oriented Gradients (HOG) features, we trained a Random Forest classifier on these features, after tuning the model's hyperparameters to address overfitting. The classifier was trained with 80 estimators, max_depth of 7, and min_samples_split of 3. The performance of the model with HOG features was as follows:
-* Test accuracy: 0.6217
-* Validation accuracy: 0.6387
-* Training accuracy: 0.7286
-  
-Despite tuning the hyperparameters, the model with HOG features did not outperform the original feature-based model, which achieved a test accuracy of 0.6597 and a validation accuracy of 0.686.
+![RF Confusion](images/rf_confusion_matrix.png)
+<br/>
+**Figure 6: Random Forest Confusion Matrix.** Based on the confusion matrix generated from the random forest model we can calculate the precision and recall from each class.
+<br><br>
+
+Then for each class our precision and recall are roughly .8355 and .3215 for compost, .84 and .3526 for landfill, and .6147 and .9615 for recyclable.
+
+
+The model trained with the HOG features had the following hyperparameters: `n_estimators`=80, `max_depth`=7, `min_samples_split`=3. This model achieved a test accuracy of 0.6217, a validation accuracy of 0.6387, and a training accuracy of 0.7286.
+
+![RF HOG Confusion](images/rf_hog_confusion_matrix.png)
+<br/>
+**Figure 7: Random Forest Confusion Matrix with HOG Features.** Based on the confusion matrix generated from the random forest model we can calculate the precision and recall from each class.
+<br><br>
+
+
+Then for each class our precision and recall are roughly .9091 and .1266 for compost, .8883 and .2892 for landfill, and .5797 and .9817 for recyclable. 
+
+Despite tuning the hyperparameters, the model with HOG features did not outperform the original feature-based model.
    
+### Model 2
+
+![CNN Confusion Matrix](images/CNNConfusionMatrixAfterTuning.png)
+<br/>
+**Figure 8: Confusion Matrix.** We can see how well Model 2 performed by comporing the true labels and predicted labels across all classes.
+<br><br>
+
+Our CNN accurately classified 75% of images into landfill, recyclable, or compost, with a loss of 0.733.
+
+|     Label         |     TP     |     TN      |     FP     |     FN     |
+|-------------------|------------|-------------|------------|------------|
+|     compost       |     34     |     2386    |     223    |     357    |
+|     landfill      |     346    |     1366    |     653    |     635    |
+|     recyclable    |     975    |     603     |     769    |     653    |
+
+
+
+**Table 2: Count of True Positives, True Negatives, False Positives, and False Negatives.**
+<br><br>
+
+![CNN Loss Graph](images/CNNLossGraphAfterTuning.png)
+<br/>
+**Figure 9: Training and Validation Loss.**
+At 12 epochs (where we stopped the model to predict prevent overfitting on the test set), the training loss was about 0.4, and the validation loss was about 0.7.
+<br><br>
+
+![CNN Accuracy Graph](images/CNNAccuracyGraphAfterTuning.png)
+<br/>
+**Figure 10: Training and Validation Accuracy.** 
+At 12 epochs the training accuracy was about 0.83 while the validation accuracy was about 0.75.
+<br><br>
 
 ## Discussion
+This is where you will discuss the why, and your interpretation and your though process from beginning to end. This will mimic the sections you have created in your methods section as well as new sections you feel you need to create. You can also discuss how believable your results are at each step. You can discuss any short comings. It's ok to criticize as this shows your intellectual merit, as to how you are thinking about things scientifically and how you are able to correctly scrutinize things and find short comings. In science we never really find the perfect solution, especially since we know something will probably come up int he future (i.e. donkeys) and mess everything up. If you do it's probably a unicorn or the data and model you chose are just perfect for each other!
+
+### Data Exploration and Preprocessing
+We had a large dataset of 15000 studio and real-world images divided into 30 classes. Many were similar (e.g. 'aerosol_cans' and 'aluminum_food_cans'), so we chose to reduce the classes to the 3 high-level categories of 'recyclable', 'landfill', and 'waste' to allow our models to capture similarities between different classes in the same high-level category and generalize to images outside of the classes in the dataset. 
+
+This may have limited accuracy by removing useful information about the specific class of an image, forcing our model to accomodate by creating more complex decision boundaries. It may have been better to label images as 'recyclable', 'landfill', and 'waste' after first combining classes into several less high-level categories (eg.'cans') or simply not combine classes at all.
+
+We used min-max normalization because pixel values were not normally distributed.
+
+### Model 1
+
+Our dataset was large and imbalanced, and we anticipated complex decision boundaries due to the wide range of objects in the same class. Given that Random Forest is suited for handling large and imbalanced datasets with complex decision bounderies we chose a Random Forest classifier to capture this behavior in different subtrees. Still, our dataset contained a class imbalance, with recycling being the dominant class, which may have affected model perfromance.
+
+Becaues our first model was overfitted, we used tuned the 'n_estimators', 'max_depth', and 'min_samples_split' hyperparameters with a custom function. Since we prioritized addressing overfitting, we only considered models with a difference between training and validation accuracy of less than or equal to 0.1 to filter out overfit models and prioritize configurations with consistent performance across data splits.
+
+
+We additionally further preprocessed data for Model 1 by computing Histogram of Oriented Gradients features for input images to extract meaningful features from raw pixels and further refine model performance.
+
+Unexpectedly, the Random Forest classifier without HOG feature extraction slightly outperformed the classifier with HOG feature extraction without showing signs of overfitting. It is possible that while the original Random Forest classifier did not overfit on this dataset, the classifier with HOG feature extraction is more generalizable to data outside of the dataset.
+
+### Model 2
+For our second model, we chose a convolutional neural network to better handle the aforementioned complex decision boundary and interpret many pixel values divorced from higher-level meaning. 
+
+In addition to referencing the results of a grid search, we chose our final convolutional neural network hyperparameters specifically to maximize accuracy and address overfitting from previous models and excessive computational cost. We found a lower number of filters in the convolutional layers actually increased accuracy and reduced costs in model training time and resources. Similarly, dropout layers addressed overfitting, and feeding fewer inputs into the final dense layer reduced the complexity of the final decision. The training accuracy and loss quickly and dramatically separate from the validation accuracy and loss after 12 epochs, so we limited the fitting to 12 epochs.
+
+Because our data was so imbalanced and had multiple categories, the model was generally better at predicting that an image is not in a category than accurately predicting an image's category. This is especially true for the 'compost' label, where precision is extremely poor.
+
+Still, the model accurately classified 75% of images. This is higher than both of the Random Forest classifiers. It does not appear to be overfitted - while training accuracy is slightly higher, there is not a large difference between the training, validation, and test accuracy, and we chose an epoch number before the training and validation accuracy dramatically separate.
 
 ## Conclusion
 
+Overall, the models classified images into the categories 'compost', 'landfill', and 'recyclable' with acceptable accuracy. With the current accuracy, the models could not be used independently to classify waste. However, they may be applicable in alerting consumers that waste should likely be disposed of in another bin. This would reduce mistakes and encourage consumers to think more about properly disposing of waste. Though the Random Forest classifier was not as accurate as the CNN, it may be better suited to this task due to lower computational costs.
+
+In the future, model accuracy may be improved by altering data preprocessing. Given the disparate items in the same category, it would be worthwhile to train models to identify the original 30 classes in the dataset. This may generalize less well to objects which do not fall into one of these classes, but it will preserve useful high-level information during training and may demand a less complex model.
+
+Alternatively, given our imbalanced classes, it our model may more accurately classify a single category. This is especially true for 'compost', where 'compost' was rarely correctly predicted because there were so many 'recyclable' and 'landfill' images.
+
+Another option to address the imbalanced classes is to modify our loss function to more heavily penilize certain misclassifications. For example, we might more heavily penalize false negatives for "compost". This method would also allow us to tune our model for specific applications - heavily penalizing false negatives for "compost" would be helpful for encouraging consumers to compost more.
+
+Finally, given the large dataset, we might train our models with a certain subset of the data to avoid this imbalance altogether.
+
 ## Statement of Collaboration
+
+Name: 
+Title: 
+Contribution: 
+
+Name: 
+Title: 
+Contribution: 
+
+Name: 
+Title: 
+Contribution: 
+
+Name: 
+Title: 
+Contribution: 
+
+
+Name: Arthur Utecht
+Title: 
+Contribution: Collaborated with group to choose goal and dataset. Collaborated with group to write abstract. Plotted data distribution and wrote (unused) function to split classes. Tried implementing HOG feature extraction and CNN (threw errors, so not the code used in notebooks). Helped write Methods, Results, and Discusssion section of README. Actively discussed errors and decisions with groupmates. Analyzed results and wrote Milestone 4 README.
+
